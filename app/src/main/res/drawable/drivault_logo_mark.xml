@@ -1,0 +1,72 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="590dp"
+    android:height="650dp"
+    android:viewportWidth="590"
+    android:viewportHeight="650">
+
+    <!-- Black background -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M0,0H590V650H0Z" />
+
+    <!-- Green folder shape -->
+    <path
+        android:fillColor="#00E5A0"
+        android:pathData="
+            M55,160
+            L55,595
+            Q55,620 80,620
+            L510,620
+            Q535,620 535,595
+            L535,195
+            Q535,170 510,170
+            L295,170
+            L260,130
+            Q248,115 230,115
+            L80,115
+            Q55,115 55,140
+            Z" />
+
+    <!-- Main diagonal -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="52"
+        android:strokeLineCap="round"
+        android:pathData="M510,155 L55,610" />
+
+    <!-- Cross arm top-left -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="52"
+        android:strokeLineCap="butt"
+        android:pathData="M295,370 L170,245" />
+
+    <!-- Cross arm top-right -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="52"
+        android:strokeLineCap="round"
+        android:pathData="M295,370 L420,245" />
+
+    <!-- Cross arm bottom-left -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="52"
+        android:strokeLineCap="round"
+        android:pathData="M295,370 L170,495" />
+
+    <!-- Cross arm bottom-right -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="52"
+        android:strokeLineCap="butt"
+        android:pathData="M295,370 L420,495" />
+
+    <!-- Center circle -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="
+            M295,315
+            A55,55 0 1,1 294.9,315 Z" />
+
+</vector>

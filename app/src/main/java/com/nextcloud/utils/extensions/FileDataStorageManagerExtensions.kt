@@ -1,0 +1,55 @@
+/*
+ * Nextcloud - Android Client
+ *
+ * SPDX-FileCopyrightText: 2025 Alper Ozturk <alper.ozturk@nextcloud.com>
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+package com.nextcloud.utils.extensions
+
+import com.nextcloud.client.database.entity.toOCCapability
+import com.owncloud.android.datamodel.FileDataStorageManager
+import com.owncloud.android.datamodel.OCFile
+import com.owncloud.android.lib.resources.shares.OCShare
+import com.owncloud.android.lib.resources.status.OCCapability
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+suspend fun FileDataStorageManager.saveShares(shares: List<OCShare>, accountName: String) {
+    withContext(Dispatchers.IO) {
+        val entities = shares.map { share ->
+            share.toEntity(accountName)
+        }
+
+        shareDao.insertAll(entities)
+    }
+}
+
+fun FileDataStorageManager.searchFilesByName(file: OCFile, accountName: String, query: String): List<OCFile> =
+    fileDao.searchFilesInFolder(file.fileId, accountName, query).map {
+        createFileInstance(it)
+    }
+
+fun FileDataStorageManager.getDecryptedPath(file: OCFile): String {
+    val paths = mutableListOf<String>()
+    var entity = fileDao.getFileByEncryptedRemotePath(file.remotePath, user.accountName)
+
+    while (entity != null) {
+        entity.name?.takeIf { it.isNotEmpty() }?.let {
+            paths.add(it.removePrefix(OCFile.PATH_SEPARATOR))
+        }
+        entity = entity.parent?.let { fileDao.getFileById(it) } ?: break
+    }
+
+    return paths
+        .reversed()
+        .joinToString(OCFile.PATH_SEPARATOR)
+}
+
+fun FileDataStorageManager.getNonEncryptedSubfolders(id: Long, accountName: String): List<OCFile> =
+    fileDao.getNonEncryptedSubfolders(id, accountName).map {
+        createFileInstance(it)
+    }
+
+suspend fun FileDataStorageManager.getCapabilitiesByAccountName(accountName: String): OCCapability =
+    capabilityDao.getByAccountName(accountName).toOCCapability()

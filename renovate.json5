@@ -1,0 +1,19 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended",
+        ":gitSignOff"
+    ],
+    "timezone": "Europe/Berlin",
+    "labels": [
+        "dependencies",
+        "3. to review"
+    ],
+	"schedule": [
+		"before 5am on monday"
+	],
+	"rebaseWhen": "conflicted",
+    "autoApprove": true,
+    "automerge": true,
+    "automergeType": "pr"
+}

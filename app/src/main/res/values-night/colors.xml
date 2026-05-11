@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Nextcloud - Android Client
+  ~
+  ~ SPDX-FileCopyrightText: 2019 Daniel Bailey <daniel.bailey@grappleit.co.uk>
+  ~ SPDX-License-Identifier: AGPL-3.0-or-later OR GPL-2.0-only
+-->
+<resources>
+
+    <color name="text_color">#333333</color>
+    <color name="text_color_inverse">#ffffff</color>
+    <color name="disabled_text">#ff888888</color>
+    <color name="secondary_text_color">#666666</color>
+    <color name="list_divider_background">#CAC4D0</color>
+    <color name="task_container">#F4F4F4</color>
+
+    <!-- Colors -->
+    <color name="dark">#000000</color>
+    <color name="bg_default">#ffffff</color>
+    <color name="primary_button_text_color">#ffffff</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="nc_grey">#ededed</color>
+    <color name="icon_on_nc_grey">#000000</color>
+    <color name="foreground_highlight">#1D1B1E</color>
+
+    <!-- Multiselect backgrounds -->
+    <color name="action_mode_background">@color/fontAppbar</color>
+    <color name="selected_item_background">#ECECEC</color>
+
+    <color name="filelist_icon_background">#DDDDDD</color>
+    <color name="standard_grey">#757575</color>
+
+    <color name="drawer_menu_icon">#757575</color>
+    <color name="bg_fallback_highlight">#616161</color>
+    <color name="drawer_active_item_background">#80000000</color>
+
+    <!-- App bar -->
+    <color name="appbar">@color/bg_default</color>
+    <color name="fontAppbar">#666666</color>
+
+    <color name="bg_message_bubble">#EFEFEF</color>
+</resources>
