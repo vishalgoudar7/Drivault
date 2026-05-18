@@ -991,9 +991,14 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity
                 Log_OC.e(TAG, "Error converting internationalized domain name " + uri, ex);
             }
 
+//            if (accountSetupBinding != null) {
+//                mServerStatusText = getResources().getString(R.string.auth_testing_connection);
+//                mServerStatusIcon = R.drawable.progress_small;
+//                showServerStatus();
+//            }
             if (accountSetupBinding != null) {
-                mServerStatusText = getResources().getString(R.string.auth_testing_connection);
-                mServerStatusIcon = R.drawable.progress_small;
+                mServerStatusText = "";
+                mServerStatusIcon = NO_ICON;
                 showServerStatus();
             }
 
@@ -1018,11 +1023,11 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity
      */
     private void checkBasicAuthorization(@Nullable String webViewUsername, @Nullable String webViewPassword) {
         // be gentle with the user
-        IndeterminateProgressDialog dialog = IndeterminateProgressDialog.newInstance(R.string.auth_trying_to_login,
-                                                                                     true);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(dialog, WAIT_DIALOG_TAG);
-        ft.commitAllowingStateLoss();
+//        IndeterminateProgressDialog dialog = IndeterminateProgressDialog.newInstance(R.string.auth_trying_to_login,
+//                                                                                     true);
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.add(dialog, WAIT_DIALOG_TAG);
+//        ft.commitAllowingStateLoss();
 
         // validate credentials accessing the root folder
         OwnCloudCredentials credentials = OwnCloudCredentialsFactory.newBasicCredentials(webViewUsername,
@@ -1434,6 +1439,11 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity
         final Optional<User> user = accountManager.getUser(mAccount.name);
 
         if (user.isPresent()) {
+            runOnUiThread(() -> {
+                if (accountSetupWebviewBinding != null) {
+                    accountSetupWebviewBinding.loginWebviewProgressBar.setVisibility(View.VISIBLE);
+                }
+            });
             Executors.newSingleThreadExecutor().execute(() -> {
                 try {
                     final FileDataStorageManager storageManager = new FileDataStorageManager(user.get(), getContentResolver());
