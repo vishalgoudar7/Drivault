@@ -41,6 +41,7 @@ import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
@@ -490,11 +491,20 @@ public abstract class DrawerActivity extends ToolbarActivity
         final var optionalUser = getUser();
         if (optionalUser.isPresent()) {
             final var accountName = optionalUser.get().getAccountName();
-            notesView.setOnClickListener(v -> ecosystemManager.openApp(EcosystemApp.NOTES, accountName));
-            talkView.setOnClickListener(v -> ecosystemManager.openApp(EcosystemApp.TALK, accountName));
-        }
+            notesView.setOnClickListener(v ->
+                                             Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+                                        );
 
-        moreView.setOnClickListener(v -> LinkHelper.INSTANCE.openAppStore("Nextcloud", true, this));
+            talkView.setOnClickListener(v ->
+                                            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+                                       );
+//            notesView.setOnClickListener(v -> ecosystemManager.openApp(EcosystemApp.NOTES, accountName));
+//            talkView.setOnClickListener(v -> ecosystemManager.openApp(EcosystemApp.TALK, accountName));
+        }
+        moreView.setOnClickListener(v ->
+                                        Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+                                   );
+        //moreView.setOnClickListener(v -> LinkHelper.INSTANCE.openAppStore("Nextcloud", true, this));
         assistantView.setOnClickListener(v -> startAssistantScreen());
         final var optionalCapabilities = getCapabilities();
         if (optionalCapabilities.isPresent()) {
@@ -615,8 +625,7 @@ public abstract class DrawerActivity extends ToolbarActivity
             final Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         } else if (itemId == R.id.nav_community) {
-            resetOnlyPersonalAndOnDevice();
-            pushFragment(NavigatorScreen.Community.INSTANCE);
+            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.nav_invite_friends) {
             resetOnlyPersonalAndOnDevice();
             pushFragment(NavigatorScreen.InviteFriends.INSTANCE);

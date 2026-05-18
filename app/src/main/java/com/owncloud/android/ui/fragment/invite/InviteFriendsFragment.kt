@@ -24,6 +24,9 @@ import com.owncloud.android.databinding.FragmentInviteFriendsBinding
 import com.owncloud.android.utils.DisplayUtils
 import com.owncloud.android.utils.theme.ViewThemeUtils
 import javax.inject.Inject
+import okhttp3.*
+import java.io.IOException
+import android.util.Log
 
 class InviteFriendsFragment : Fragment() {
 
@@ -77,7 +80,13 @@ class InviteFriendsFragment : Fragment() {
             binding.inviteFriendsName.requestFocus()
         }
 
+        // binding.inviteFriendsSend.setOnClickListener {
+        //     sendInvite()
+        // }
         binding.inviteFriendsSend.setOnClickListener {
+
+            Log.d("INVITE_DEBUG", "Send Button Clicked")
+
             sendInvite()
         }
     }
@@ -89,6 +98,9 @@ class InviteFriendsFragment : Fragment() {
         val name = binding.inviteFriendsName.text?.toString()?.trim().orEmpty()
         val email = binding.inviteFriendsEmail.text?.toString()?.trim().orEmpty()
         val mobileUsername = binding.inviteFriendsMobile.text?.toString()?.trim().orEmpty()
+        Log.d("INVITE_DEBUG", "Name: $name")
+        Log.d("INVITE_DEBUG", "Email: $email")
+        Log.d("INVITE_DEBUG", "Mobile: $mobileUsername")
 
         when {
             name.isBlank() -> {
@@ -105,8 +117,8 @@ class InviteFriendsFragment : Fragment() {
                 binding.inviteFriendsMobileContainer.error = getString(R.string.invite_friends_mobile_required)
                 binding.inviteFriendsMobile.requestFocus()
             }
-
-            else -> addInvite(name, email, mobileUsername)
+            else -> createUser(name, email, mobileUsername)
+            // else -> addInvite(name, email, mobileUsername)
         }
     }
 
@@ -115,6 +127,124 @@ class InviteFriendsFragment : Fragment() {
         binding.inviteFriendsEmailContainer.error = null
         binding.inviteFriendsMobileContainer.error = null
     }
+
+
+    private fun createUser(name: String, email: String, mobileUsername: String) {
+        Log.d("INVITE_DEBUG", "createUser Started")
+        val client = OkHttpClient()
+
+        val formBody = FormBody.Builder()
+            .add("displayName", name)
+            .add("userid", mobileUsername)
+            .add("email", email)
+            .build()
+        Log.d("INVITE_DEBUG", "Sending API Request")
+        // val request = Request.Builder()
+        //     .url("https://login.drivault.com/ocs/v1.php/cloud/users")
+        //     .post(formBody)
+        //     .addHeader("OCS-APIRequest", "true")
+        //     .addHeader(
+        //         "Authorization",
+        //         Credentials.basic("admin", "kuRsef-gobno8-gankux")
+        //     )
+        val request = Request.Builder()
+            .url("https://login.drivault.com/ocs/v1.php/cloud/users")
+            .post(formBody)
+            .addHeader("OCS-APIRequest", "true")
+            .addHeader("Accept", "application/json")
+            .addHeader(
+                "Authorization",
+                Credentials.basic("admin", "kuRsef-gobno8-gankux")
+            )
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("INVITE_DEBUG", "API FAILURE: ${e.message}")
+                requireActivity().runOnUiThread {
+                    DisplayUtils.showSnackMessage(
+                        requireActivity(),
+                        "API Failed: ${e.message}"
+                    )
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseText = response.body?.string()
+                Log.d("INVITE_DEBUG", "API RESPONSE: ${response.code}")
+                requireActivity().runOnUiThread {
+                    if (response.isSuccessful) {
+
+                        addInvite(name, email, mobileUsername)
+
+                        clearFormInputs()
+
+                        DisplayUtils.showSnackMessage(
+                            requireActivity(),
+                            "Invite Sent Successfully"
+                        )
+
+                    } else {
+
+                        DisplayUtils.showSnackMessage(
+                            requireActivity(),
+                            "Failed : $responseText"
+                        )
+                    }
+                    //
+                    // if (response.isSuccessful) {++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    //
+                    //     addInvite(name, email, mobileUsername)
+                    //
+                    //     DisplayUtils.showSnackMessage(
+                    //         requireActivity(),
+                    //         "Invite Sent Successfully"
+                    //     )
+                    //
+                    // } else {
+                    //
+                    //     DisplayUtils.showSnackMessage(
+                    //         requireActivity(),
+                    //         "Failed : ${response.code}"
+                    //     )
+                    // }
+                }
+            }
+        })
+    }
+
+
+
+
+
+
+
+
+
+
 
     private fun addInvite(name: String, email: String, mobileUsername: String) {
         invitedFriends.add(

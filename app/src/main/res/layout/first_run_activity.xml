@@ -31,13 +31,12 @@
 
         <com.owncloud.android.ui.whatsnew.ProgressIndicator
             android:id="@+id/progressIndicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_margin"
-            android:backgroundTint="#40E095"
-            android:visibility="gone">
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            tools:visibility="gone" />
 
-        </com.owncloud.android.ui.whatsnew.ProgressIndicator>
+<!--        </com.owncloud.android.ui.whatsnew.ProgressIndicator>-->
     </LinearLayout>
 
     <LinearLayout

@@ -32,27 +32,61 @@
 
                 <TextView
                     android:id="@+id/invite_friends_count"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/invite_friends_count"
                     android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:gravity="center"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/invite_friends_message"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/standard_half_padding"
                     android:text="@string/invite_friends_message"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/invite_friends_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standard_half_padding"
+                    android:text="@string/invite_friends_benefits_title"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/invite_friends_description"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/invite_friends_benefit_one"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/standard_half_padding"
-                    android:gravity="center"
+                    android:text="@string/invite_friends_benefit_one"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/invite_friends_benefit_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standard_quarter_padding"
+                    android:text="@string/invite_friends_benefit_two"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/invite_friends_benefit_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standard_quarter_padding"
+                    android:text="@string/invite_friends_benefit_three"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/invite_friends_outro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standard_padding"
                     android:text="@string/invite_friends_description"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -113,8 +147,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/standard_half_padding"
-                android:hint="@string/invite_friends_mobile_hint"
-                app:helperText="@string/invite_friends_mobile_helper">
+                android:hint="@string/invite_friends_mobile_hint">
+
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/invite_friends_mobile"

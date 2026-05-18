@@ -329,18 +329,18 @@ public class SettingsActivity extends PreferenceActivity
         }
 
         // source code
-        boolean sourcecodeEnabled = getResources().getBoolean(R.bool.sourcecode_enabled);
-        Preference sourcecodePreference = findPreference("sourcecode");
-        if (sourcecodePreference != null) {
-            if (sourcecodeEnabled) {
-                sourcecodePreference.setOnPreferenceClickListener(preference -> {
-                    DisplayUtils.startLinkIntent(this, R.string.sourcecode_url);
-                    return true;
-                });
-            } else {
-                preferenceCategoryAbout.removePreference(sourcecodePreference);
-            }
-        }
+//        boolean sourcecodeEnabled = getResources().getBoolean(R.bool.sourcecode_enabled);
+//        Preference sourcecodePreference = findPreference("sourcecode");
+//        if (sourcecodePreference != null) {
+//            if (sourcecodeEnabled) {
+//                sourcecodePreference.setOnPreferenceClickListener(preference -> {
+//                    DisplayUtils.startLinkIntent(this, R.string.sourcecode_url);
+//                    return true;
+//                });
+//            } else {
+//                preferenceCategoryAbout.removePreference(sourcecodePreference);
+//            }
+//        }
     }
 
     private void setupSyncCategory() {

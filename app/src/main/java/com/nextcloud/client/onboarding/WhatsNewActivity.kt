@@ -89,21 +89,38 @@ class WhatsNewActivity :
         }
 
         adapter?.let {
-            binding.progressIndicator.setNumberOfSteps(it.itemCount)
+            // binding.progressIndicator.setNumberOfSteps(it.itemCount)
             binding.contentPanel.adapter = it
         }
     }
 
     private fun setupForwardImageButton() {
         viewThemeUtils?.platform?.colorImageView(binding.forward, ColorRole.PRIMARY)
+        // binding.forward.setOnClickListener {
+        //     if (binding.progressIndicator.hasNextStep()) {
+        //         binding.contentPanel.setCurrentItem(binding.contentPanel.currentItem + 1, true)
+        //         binding.progressIndicator.animateToStep(binding.contentPanel.currentItem + 1)
+        //     }
+        //     else {
+        //         onFinish()
+        //         finish()
+        //     }
+        //     updateNextButtonIfNeeded()
+        // }
         binding.forward.setOnClickListener {
-            if (binding.progressIndicator.hasNextStep()) {
-                binding.contentPanel.setCurrentItem(binding.contentPanel.currentItem + 1, true)
-                binding.progressIndicator.animateToStep(binding.contentPanel.currentItem + 1)
+            val lastItem =
+                (binding.contentPanel.adapter?.itemCount ?: 1) - 1
+
+            if (binding.contentPanel.currentItem < lastItem) {
+                binding.contentPanel.setCurrentItem(
+                    binding.contentPanel.currentItem + 1,
+                    true
+                )
             } else {
                 onFinish()
                 finish()
             }
+
             updateNextButtonIfNeeded()
         }
         binding.forward.background = null
@@ -139,18 +156,35 @@ class WhatsNewActivity :
         )
     }
 
+
     private fun updateNextButtonIfNeeded() {
-        val hasNextStep = binding.progressIndicator.hasNextStep()
-        binding.forward.setImageResource(if (hasNextStep) R.drawable.arrow_right else R.drawable.ic_ok)
-        binding.skip.visibility = if (hasNextStep) View.VISIBLE else View.INVISIBLE
+        val hasNextStep =
+            binding.contentPanel.currentItem <
+                ((binding.contentPanel.adapter?.itemCount ?: 1) - 1)
+
+        binding.forward.setImageResource(
+            if (hasNextStep) R.drawable.arrow_right
+            else R.drawable.ic_ok
+        )
+
+        binding.skip.visibility =
+            if (hasNextStep) View.VISIBLE
+            else View.INVISIBLE
     }
+    // private fun updateNextButtonIfNeeded() {
+    //     val hasNextStep = binding.progressIndicator.hasNextStep()
+    //     binding.forward.setImageResource(if (hasNextStep) R.drawable.arrow_right else R.drawable.ic_ok)
+    //     binding.skip.visibility = if (hasNextStep) View.VISIBLE else View.INVISIBLE
+    // }
 
     private fun onFinish() {
         preferences?.lastSeenVersionCode = BuildConfig.VERSION_CODE
     }
-
     private fun controlPanelOnPageSelected(position: Int) {
-        binding.progressIndicator.animateToStep(position + 1)
         updateNextButtonIfNeeded()
     }
+    // private fun controlPanelOnPageSelected(position: Int) {
+    //     binding.progressIndicator.animateToStep(position + 1)
+    //     updateNextButtonIfNeeded()
+    // }
 }

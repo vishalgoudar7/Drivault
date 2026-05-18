@@ -775,11 +775,15 @@
     <string name="actionbar_search">Search</string>
     <string name="drawer_synced_folders">Auto upload</string>
     <string name="drawer_community">Community</string>
-    <string name="invite_friends_title">Invite friends</string>
-    <string name="invite_friends_count">9</string>
-    <string name="invite_friends_message">Invite 9 friends</string>
-    <string name="invite_friends_description">Share Drivault with your friends from this page.</string>
-    <string name="invite_friends_action">Invite friends</string>
+    <string name="invite_friends_title">Invite Friends</string>
+    <string name="invite_friends_count">Invite Friends</string>
+    <string name="invite_friends_message">Share Drivault with your friends and earn free permanent cloud storage for every successful signup.</string>
+    <string name="invite_friends_benefits_title">Benefits</string>
+    <string name="invite_friends_benefit_one">Get 100GB extra storage for each signup</string>
+    <string name="invite_friends_benefit_two">Invite up to 9 friends</string>
+    <string name="invite_friends_benefit_three">Earn up to 1TB free storage </string>
+    <string name="invite_friends_description">Start inviting your friends today and unlock more space on Drivault.</string>
+    <string name="invite_friends_action">Send Invitation</string>
     <string name="invite_friends_mobile_hint">Mobile number</string>
     <string name="invite_friends_mobile_helper">This mobile number will be used as the Nextcloud username.</string>
     <string name="invite_friends_name_required">Enter a name.</string>
@@ -1352,7 +1356,7 @@
     <string name="calendar_name_linewrap" translatable="false">%1$s\n%2$s</string>
     <string name="no_calendar_exists">No calendar exists</string>
     <string name="more">More</string>
-    <string name="write_email">Send email</string>
+    <string name="write_email">Send Invitation</string>
     <string name="no_actions">No actions for this user</string>
     <string name="search_error">Error getting search results</string>
     <string name="load_more_results">Load more results</string>

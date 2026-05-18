@@ -87,9 +87,9 @@
     <bool name="show_hidden_files_enabled">true</bool>
     <bool name="davdroid_integration_enabled">true</bool>
     <bool name="help_enabled">true</bool>
-    <string name="url_help">https://help.nextcloud.com/c/clients/android/</string>
+    <string name="url_help">https://www.drivault.com/</string>
     <bool name="privacy_enabled">true</bool>
-    <string name="privacy_url">https://nextcloud.com/privacy</string>
+    <string name="privacy_url">https://www.drivault.com/privacy-policy</string>
     <bool name="imprint_enabled">false</bool>
     <bool name="recommend_enabled">true</bool>
     <bool name="logger_enabled">false</bool>
@@ -127,7 +127,8 @@
     <string name="report_issue_empty_link" translatable="false">https://github.com/nextcloud/android/issues/new/choose</string>
 
     <!-- login data links -->
-    <string name="login_data_own_scheme" translatable="false">nc</string>
+<!--    <string name="login_data_own_scheme" translatable="false">nc</string>-->
+    <string name="login_data_own_scheme" translatable="false">drivault</string>
     <!-- url for webview login, with the protocol prefix and with full url (normally /index.php/login/flow)
     If set, will replace all other login methods available -->
     <string name="webview_login_url" translatable="false"></string>
