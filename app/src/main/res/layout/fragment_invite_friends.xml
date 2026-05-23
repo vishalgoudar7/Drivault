@@ -10,7 +10,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:clipToPadding="false"
+    android:paddingBottom="100dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +36,7 @@
                     android:id="@+id/invite_friends_count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/invite_friends_count"
+                    android:text="Invitation Limit: 9 Users"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:gravity="center"
                     android:textStyle="bold" />
@@ -155,7 +157,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="phone"
-                    android:inputType="phone" />
+                    android:inputType="phone"
+                    android:maxLength="10"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -166,9 +169,120 @@
                 android:layout_marginTop="@dimen/standard_padding"
                 android:text="@string/write_email"
                 android:theme="@style/Button.Primary" />
+            <ProgressBar
+                android:id="@+id/invite_progress"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:visibility="gone" />
 
         </LinearLayout>
+        <!-- Invite Limit Layout -->
 
+        <LinearLayout
+            android:id="@+id/invite_limit_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="20dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:src="@drawable/ic_cloud_limit"
+                android:layout_marginTop="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/invitation_limit_reached"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:textColor="@color/text_color"
+                android:layout_marginTop="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/you_ve_invited_the_maximum_9_friends_nupgrade_storage_to_invite_more"
+                android:textSize="16sp"
+                android:textColor="#777777"
+                android:gravity="center"
+                android:layout_marginTop="10dp" />
+
+            <!-- Basic Plan -->
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                app:cardCornerRadius="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/basic"
+                        android:textColor="#0A7C3E"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_100_gb"
+                        android:textStyle="bold"
+                        android:textSize="34sp"
+                        android:layout_marginTop="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_35_mo"
+                        android:textStyle="bold"
+                        android:textColor="#0A7C3E"
+                        android:textSize="28sp"
+                        android:layout_marginTop="10dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_upgrade"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:text="@string/get_discount"
+                        android:textAllCaps="false"
+                        android:textColor="#0A7C3E"
+                        android:backgroundTint="#DDF3E5"
+                        android:layout_marginTop="18dp"
+                        app:cornerRadius="30dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Explore Button -->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_explore"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:text="@string/explore_more_plans"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#0A7C3E"
+                android:layout_marginTop="25dp"
+                app:cornerRadius="30dp" />
+
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/invite_friends_list_section"
             android:layout_width="match_parent"
@@ -185,74 +299,80 @@
                 android:text="@string/invite_friends_list_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
-
-            <HorizontalScrollView
+            <LinearLayout
+                android:id="@+id/invite_friends_table"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standard_half_padding"
-                android:scrollbars="horizontal">
+                android:layout_marginTop="12dp"
+                android:orientation="vertical" />
 
-                <TableLayout
-                    android:id="@+id/invite_friends_table"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="1,2,3,4">
+<!--            <HorizontalScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/standard_half_padding"-->
+<!--                android:scrollbars="horizontal">-->
 
-                    <TableRow
-                        android:id="@+id/invite_friends_table_header"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+<!--                <TableLayout-->
+<!--                    android:id="@+id/invite_friends_table"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:stretchColumns="1,2,3,4">-->
 
-                        <TextView
-                            android:layout_width="72dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/invite_table_header_cell"
-                            android:padding="@dimen/standard_half_padding"
-                            android:text="@string/invite_friends_column_serial"
-                            android:textColor="@color/text_color"
-                            android:textStyle="bold" />
+<!--                    <TableRow-->
+<!--                        android:id="@+id/invite_friends_table_header"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content">-->
 
-                        <TextView
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/invite_table_header_cell"
-                            android:padding="@dimen/standard_half_padding"
-                            android:text="@string/hint_name"
-                            android:textColor="@color/text_color"
-                            android:textStyle="bold" />
+<!--                        <TextView-->
+<!--                            android:layout_width="72dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/invite_table_header_cell"-->
+<!--                            android:padding="@dimen/standard_half_padding"-->
+<!--                            android:text="@string/invite_friends_column_serial"-->
+<!--                            android:textColor="@color/text_color"-->
+<!--                            android:textStyle="bold" />-->
 
-                        <TextView
-                            android:layout_width="140dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/invite_table_header_cell"
-                            android:padding="@dimen/standard_half_padding"
-                            android:text="@string/invite_friends_column_email"
-                            android:textColor="@color/text_color"
-                            android:textStyle="bold" />
+<!--                        <TextView-->
+<!--                            android:layout_width="120dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/invite_table_header_cell"-->
+<!--                            android:padding="@dimen/standard_half_padding"-->
+<!--                            android:text="@string/hint_name"-->
+<!--                            android:textColor="@color/text_color"-->
+<!--                            android:textStyle="bold" />-->
 
-                        <TextView
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/invite_table_header_cell"
-                            android:padding="@dimen/standard_half_padding"
-                            android:text="@string/invite_friends_column_mobile"
-                            android:textColor="@color/text_color"
-                            android:textStyle="bold" />
+<!--                        <TextView-->
+<!--                            android:layout_width="140dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/invite_table_header_cell"-->
+<!--                            android:padding="@dimen/standard_half_padding"-->
+<!--                            android:text="@string/invite_friends_column_email"-->
+<!--                            android:textColor="@color/text_color"-->
+<!--                            android:textStyle="bold" />-->
 
-                        <TextView
-                            android:layout_width="120dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/invite_table_header_cell"
-                            android:padding="@dimen/standard_half_padding"
-                            android:text="@string/invite_friends_column_accepted"
-                            android:textColor="@color/text_color"
-                            android:textStyle="bold" />
+<!--                        <TextView-->
+<!--                            android:layout_width="120dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/invite_table_header_cell"-->
+<!--                            android:padding="@dimen/standard_half_padding"-->
+<!--                            android:text="@string/invite_friends_column_mobile"-->
+<!--                            android:textColor="@color/text_color"-->
+<!--                            android:textStyle="bold" />-->
 
-                    </TableRow>
+<!--                        <TextView-->
+<!--                            android:layout_width="120dp"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:background="@drawable/invite_table_header_cell"-->
+<!--                            android:padding="@dimen/standard_half_padding"-->
+<!--                            android:text="@string/invite_friends_column_accepted"-->
+<!--                            android:textColor="@color/text_color"-->
+<!--                            android:textStyle="bold" />-->
 
-                </TableLayout>
+<!--                    </TableRow>-->
 
-            </HorizontalScrollView>
+<!--                </TableLayout>-->
+
+<!--            </HorizontalScrollView>-->
 
         </LinearLayout>
 

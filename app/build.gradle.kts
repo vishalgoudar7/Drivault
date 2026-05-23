@@ -421,6 +421,8 @@ dependencies {
     implementation(libs.androidsvg)
     implementation(libs.annotation)
     implementation(libs.emoji.google)
+
+    implementation("com.google.android.material:material:1.12.0")
     // endregion
 
     // region AppScan, document scanner not available on FDroid (generic) due to OpenCV binaries

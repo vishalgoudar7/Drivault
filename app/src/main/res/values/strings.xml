@@ -444,6 +444,65 @@
     <string name="authenticator_activity_please_complete_login_process">Please complete login process in your browser</string>
     <string name="authenticator_activity_login_error">There was an issue processing your login request. Please try again later.</string>
 
+
+    <string name="invite_limit_completed">
+    9 Invitations completed
+</string>
+
+    <string name="invite_friends_list_count">
+    Invited friends list (%1$d/9)
+</string>
+
+
+
+
+    <string name="invited_users_count">
+    Invited Users (%1$d)
+</string>
+
+    <string name="status_accepted">
+    Accepted
+</string>
+
+    <string name="status_pending">
+    Pending
+</string>
+
+    <string name="invite_completed">
+    🎉 %1$d Invitations completed!
+</string>
+
+    <string name="invite_sent_success">
+    Invite Sent Successfully
+</string>
+
+    <string name="invite_revoked">
+    Invitation Revoked
+</string>
+
+
+    <string name="invite_status_pending">Pending</string>
+
+    <string name="invite_status_accepted">Accepted</string>
+
+    <string name="invite_action_resend">Resend</string>
+
+    <string name="invite_action_revoke">Revoke</string>
+
+    <string name="invite_action_menu">More options</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string name="favorite">Add to favorites</string>
     <string name="unset_favorite">Remove from favorites</string>
     <string name="encrypted">Set as encrypted</string>
@@ -1551,4 +1610,12 @@
     <string name="sync_conflict_notification_description">Upload conflicts detected. Open uploads to resolve.</string>
     <string name="sync_conflict_notification_action_title">Resolve conflicts</string>
     <string name="extension_cannot_be_changed">Extension cannot be changed</string>
+    <string name="explore_more_plans">Explore more plans</string>
+    <string name="get_discount">Get discount</string>
+    <string name="_35_mo">₹35/mo</string>
+    <string name="_100_gb">100 GB</string>
+    <string name="basic">Basic</string>
+    <string name="you_ve_invited_the_maximum_9_friends_nupgrade_storage_to_invite_more">You\'ve invited the maximum 9 friends.\n Upgrade for more storage.</string>
+    <string name="invitation_limit_reached">Invitation limit reached</string>
+    <string name="data_migration">Data Migration</string>
 </resources>

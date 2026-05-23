@@ -620,6 +620,14 @@ public abstract class DrawerActivity extends ToolbarActivity
         } else if (itemId == R.id.nav_activity) {
             resetOnlyPersonalAndOnDevice();
             pushFragment(NavigatorScreen.Activities.INSTANCE);
+        } else if (itemId == R.id.nav_data_migration) {
+
+            Intent browserIntent = new Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://login.drivault.com/index.php/settings/user/migration")
+            );
+
+            startActivity(browserIntent);
         } else if (itemId == R.id.nav_settings) {
             resetOnlyPersonalAndOnDevice();
             final Intent intent = new Intent(this, SettingsActivity.class);

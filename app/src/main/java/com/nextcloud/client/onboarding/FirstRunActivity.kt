@@ -18,7 +18,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.viewpager2.widget.ViewPager2
+
 import com.nextcloud.android.common.ui.theme.utils.ColorRole
 import com.nextcloud.client.account.UserAccountManager
 import com.nextcloud.client.appinfo.AppInfo
@@ -27,6 +27,7 @@ import com.nextcloud.client.preferences.AppPreferences
 import com.nextcloud.utils.mdm.MDMConfig
 import com.owncloud.android.BuildConfig
 import com.owncloud.android.R
+
 import com.owncloud.android.authentication.AuthenticatorActivity
 import com.owncloud.android.databinding.FirstRunActivityBinding
 import com.owncloud.android.features.FeatureItem
@@ -37,6 +38,7 @@ import com.owncloud.android.utils.DisplayUtils
 import com.owncloud.android.utils.theme.ViewThemeUtils
 import javax.inject.Inject
 
+import androidx.core.content.edit
 /**
  * Activity displaying general feature after a fresh install.
  */
@@ -107,7 +109,12 @@ class FirstRunActivity :
                     }
 
                     userAccountManager?.setCurrentOwnCloudAccount(account.name)
+                    val sharedPreferences =
+                        getSharedPreferences("USER_DATA", MODE_PRIVATE)
 
+                    sharedPreferences.edit {
+                        putString("logged_user_email", account.name)
+                    }
                     val i = Intent(this, FileDisplayActivity::class.java)
                     i.action = FileDisplayActivity.RESTART
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -118,14 +125,19 @@ class FirstRunActivity :
     }
 
     private fun setupLoginButton() {
-        // defaultViewThemeUtils?.material?.colorMaterialButtonPrimaryFilled(binding.login)
+
+        binding.login.isClickable = true
+        binding.login.isFocusable = false
+        binding.login.isPressed = false
+
         binding.login.setOnClickListener {
-            if (intent.getBooleanExtra(EXTRA_ALLOW_CLOSE, false)) {
-                val authenticatorActivityIntent = getAuthenticatorActivityIntent(false)
-                activityResult?.launch(authenticatorActivityIntent)
-            } else {
-                finish()
-            }
+
+            val authenticatorActivityIntent =
+                getAuthenticatorActivityIntent(false)
+
+            activityResult?.launch(
+                authenticatorActivityIntent
+            )
         }
     }
 
