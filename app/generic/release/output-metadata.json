@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.drivault.client",
+  "applicationId": "com.drivault",
   "variantName": "genericRelease",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 330020000,
-      "versionName": "33.2.0 Alpha1",
+      "versionCode": 330020054,
+      "versionName": "33.3.0",
       "outputFile": "app-generic-release.apk"
     }
   ],

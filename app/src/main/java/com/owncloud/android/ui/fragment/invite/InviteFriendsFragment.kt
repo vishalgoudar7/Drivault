@@ -397,7 +397,8 @@ class InviteFriendsFragment : Fragment() {
         Log.d("INVITE_DEBUG", "Sending API Request")
 
         val request = Request.Builder()
-            .url("http://10.0.2.2/php_invitation_system/api/send_invite.php")
+            .url(ApiConfig.BASE_URL + "send_invite.php")
+            // .url("http://10.0.2.2/php_invitation_system/api/send_invite.php")
             .post(formBody)
             .build()
 
@@ -477,8 +478,12 @@ class InviteFriendsFragment : Fragment() {
             .build()
 
         val request = Request.Builder()
+            // .url(
+            //     "http://10.0.2.2/php_invitation_system/api/get_invited_users.php?inviter_email=${senderEmail.trim()}"
+            // )
             .url(
-                "http://10.0.2.2/php_invitation_system/api/get_invited_users.php?inviter_email=${senderEmail.trim()}"
+                ApiConfig.BASE_URL +
+                    "get_invited_users.php?inviter_email=${senderEmail.trim()}"
             )
             .post(formBody)
             .build()
@@ -591,9 +596,10 @@ class InviteFriendsFragment : Fragment() {
 
         val request =
             Request.Builder()
-                .url(
-                    "http://10.0.2.2/php_invitation_system/api/revoke_invite.php"
-                )
+                .url(ApiConfig.BASE_URL + "revoke_invite.php")
+                // .url(
+                //     "http://10.0.2.2/php_invitation_system/api/revoke_invite.php"
+                // )
                 .post(formBody)
                 .build()
 
@@ -821,8 +827,12 @@ class InviteFriendsFragment : Fragment() {
             // .url(
             //     "http://10.0.2.2/php_invitation_system/api/get_invited_users.php?inviter_email=$senderEmail"
             // )
+            // .url(
+            //     "http://10.0.2.2/php_invitation_system/api/get_invited_users.php?inviter_email=$inviterValue"
+            // )
             .url(
-                "http://10.0.2.2/php_invitation_system/api/get_invited_users.php?inviter_email=$inviterValue"
+                ApiConfig.BASE_URL +
+                    "get_invited_users.php?inviter_email=$inviterValue"
             )
             .build()
 

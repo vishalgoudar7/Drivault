@@ -123,7 +123,7 @@ android {
         //     versionBuild > 50 -> "${versionMajor}.${versionMinor}.${versionPatch} RC" + (versionBuild - 50)
         //     else -> "${versionMajor}.${versionMinor}.${versionPatch} Alpha" + (versionBuild + 1)
         // }
-        versionCode = 330020053
+        versionCode = 330020054
         versionName = "33.3.0"
 
         // adapt structure from Eclipse to Gradle/Android Studio expectations;
@@ -313,7 +313,7 @@ tasks.withType<SpotBugsTask>().configureEach {
 
 // Run the compiler as a separate process
 tasks.withType<JavaCompile>().configureEach {
-    options.isFork = true
+    options.isFork = false
 
     // Enable Incremental Compilation
     options.isIncremental = true
