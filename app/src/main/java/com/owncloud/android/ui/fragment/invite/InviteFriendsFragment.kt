@@ -420,9 +420,28 @@ class InviteFriendsFragment : Fragment() {
 
             override fun onResponse(call: Call, response: Response) {
 
+                // val responseText = response.body?.string()
+                //
+                // Log.d("INVITE_DEBUG", "API RESPONSE: $responseText")
                 val responseText = response.body?.string()
 
                 Log.d("INVITE_DEBUG", "API RESPONSE: $responseText")
+
+                try {
+                    val json = JSONObject(responseText ?: "")
+
+                    Log.d(
+                        "INVITE_DEBUG",
+                        "Inviter Name: ${json.optString("inviter_name")}"
+                    )
+
+                    Log.d(
+                        "INVITE_DEBUG",
+                        "Inviter Number: ${json.optString("inviter_email")}"
+                    )
+                } catch (e: Exception) {
+                    Log.e("INVITE_DEBUG", "JSON Parse Error", e)
+                }
 
                 requireActivity().runOnUiThread {
                     binding?.inviteProgress?.visibility = View.GONE

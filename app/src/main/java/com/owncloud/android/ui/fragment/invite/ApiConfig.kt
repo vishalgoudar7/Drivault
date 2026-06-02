@@ -8,5 +8,15 @@
 package com.owncloud.android.ui.fragment.invite
 
 object ApiConfig {
-    const val BASE_URL = "http://103.174.148.208/api/"
+
+    private const val IS_LOCAL = false
+
+    private const val LOCAL_URL =
+        "http://10.0.2.2/New%20folder/api/"
+
+    private const val LIVE_URL =
+        "http://103.174.148.208/api/"
+
+    val BASE_URL =
+        if (IS_LOCAL) LOCAL_URL else LIVE_URL
 }
