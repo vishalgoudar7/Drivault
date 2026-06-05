@@ -289,7 +289,57 @@ class InviteFriendsFragment : Fragment() {
                 binding.inviteProgress.visibility = View.VISIBLE
                 binding.inviteFriendsSend.isEnabled = false
 
-                createUser(name, email, mobileUsername)
+                checkUserExists(email) { emailExists ->
+
+                    if (emailExists) {
+
+                        requireActivity().runOnUiThread {
+
+                            binding?.inviteProgress?.visibility =
+                                View.GONE
+
+                            binding?.inviteFriendsSend?.isEnabled =
+                                true
+
+                            DisplayUtils.showSnackMessage(
+                                requireActivity(),
+                                "Email already exists"
+                            )
+                        }
+
+                    } else {
+
+                        checkUserExists(
+                            mobileUsername
+                        ) { mobileExists ->
+
+                            requireActivity().runOnUiThread {
+
+                                if (mobileExists) {
+
+                                    binding?.inviteProgress?.visibility =
+                                        View.GONE
+
+                                    binding?.inviteFriendsSend?.isEnabled =
+                                        true
+
+                                    DisplayUtils.showSnackMessage(
+                                        requireActivity(),
+                                        "Mobile number already exists"
+                                    )
+
+                                } else {
+
+                                    createUser(
+                                        name,
+                                        email,
+                                        mobileUsername
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
 
 
 
@@ -315,6 +365,70 @@ class InviteFriendsFragment : Fragment() {
             it.email.equals(email, ignoreCase = true) ||
                 it.mobile == mobile
         }
+    }
+    private fun checkUserExists(
+        searchValue: String,
+        onResult: (Boolean) -> Unit
+    ) {
+
+        val client = OkHttpClient()
+
+        val request = Request.Builder()
+            .url(
+                "https://login.drivault.com/ocs/v1.php/cloud/users?search=$searchValue"
+            )
+            .addHeader("OCS-APIRequest", "true")
+            .addHeader("Accept", "application/json")
+            .addHeader(
+                "Authorization",
+                "Basic YWRtaW46a3VSc2VmLWdvYm5vOC1nYW5rdXg="
+            )
+            .get()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+
+            override fun onFailure(
+                call: Call,
+                e: IOException
+            ) {
+                Log.e("USER_CHECK", e.message ?: "")
+                onResult(false)
+            }
+
+            override fun onResponse(
+                call: Call,
+                response: Response
+            ) {
+
+                try {
+
+                    val body = response.body?.string()
+
+                    Log.d("USER_CHECK", body ?: "")
+
+                    val json =
+                        JSONObject(body ?: "")
+
+                    val users =
+                        json.getJSONObject("ocs")
+                            .getJSONObject("data")
+                            .getJSONArray("users")
+
+                    onResult(users.length() > 0)
+
+                } catch (e: Exception) {
+
+                    Log.e(
+                        "USER_CHECK",
+                        "Parse Error",
+                        e
+                    )
+
+                    onResult(false)
+                }
+            }
+        })
     }
 
     // private fun createUser(

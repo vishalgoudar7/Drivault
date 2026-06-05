@@ -13,6 +13,7 @@ import com.nextcloud.client.di.Injectable
 import com.nextcloud.utils.mdm.MDMConfig
 import com.owncloud.android.R
 import com.owncloud.android.utils.DisplayUtils
+import android.util.Log
 
 class DeepLinkLoginActivity :
     AuthenticatorActivity(),
@@ -20,6 +21,9 @@ class DeepLinkLoginActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.e("DRIVAULT_LOGIN", "DeepLinkLoginActivity opened")
+        Log.e("DRIVAULT_LOGIN", "URI = ${intent?.data}")
         if (!MDMConfig.multiAccountSupport(this) && accountManager.accounts.size == 1) {
             DisplayUtils.showSnackMessage(this, R.string.no_mutliple_accounts_allowed)
             return
@@ -28,16 +32,21 @@ class DeepLinkLoginActivity :
         setContentView(R.layout.deep_link_login)
 
         intent.data?.let {
+            Log.e("DRIVAULT_LOGIN", "Processing URL = $it")
             try {
                 val prefix = getString(R.string.login_data_own_scheme) + PROTOCOL_SUFFIX + "login/"
+                Log.e("DRIVAULT_LOGIN", "Prefix = $prefix")
                 val loginUrlInfo = parseLoginDataUrl(prefix, it.toString())
+                Log.e("DRIVAULT_LOGIN", "Server = ${loginUrlInfo.server}")
+                Log.e("DRIVAULT_LOGIN", "User = ${loginUrlInfo.loginName}")
                 val loginText = findViewById<TextView>(R.id.loginInfo)
                 loginText.text = String.format(
                     getString(R.string.direct_login_text),
                     loginUrlInfo.loginName,
                     loginUrlInfo.server
                 )
-            } catch (_: IllegalArgumentException) {
+            } catch (e: Exception) {
+                Log.e("DRIVAULT_LOGIN", "Login error", e)
                 DisplayUtils.showSnackMessage(this, R.string.direct_login_failed)
             }
         }

@@ -123,7 +123,7 @@ android {
         //     versionBuild > 50 -> "${versionMajor}.${versionMinor}.${versionPatch} RC" + (versionBuild - 50)
         //     else -> "${versionMajor}.${versionMinor}.${versionPatch} Alpha" + (versionBuild + 1)
         // }
-        versionCode = 330020054
+        versionCode = 330020056
         versionName = "33.3.0"
 
         // adapt structure from Eclipse to Gradle/Android Studio expectations;
