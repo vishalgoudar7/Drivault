@@ -630,17 +630,13 @@ class FileDetailsSharingProcessFragment :
                 shareEditCheckbox.isChecked = hasPermission(currentPermissions, OCShare.UPDATE_PERMISSION_FLAG)
                 shareCheckbox.isChecked = hasPermission(currentPermissions, OCShare.SHARE_PERMISSION_FLAG)
 
-                if (isFolder()) {
-                    // Only for the folder makes sense to have create permission
-                    // so that user can create files in the shared folder
-                    shareCreateCheckbox.isChecked = hasPermission(currentPermissions, OCShare.CREATE_PERMISSION_FLAG)
-                    shareDeleteCheckbox.isChecked = hasPermission(currentPermissions, OCShare.DELETE_PERMISSION_FLAG)
-                } else {
+                shareDeleteCheckbox.isChecked =
+                    hasPermission(currentPermissions, OCShare.DELETE_PERMISSION_FLAG)
+
+                shareDeleteCheckbox.isEnabled = true
+
+                if (!isFolder()) {
                     shareCreateCheckbox.visibility = View.GONE
-                    shareDeleteCheckbox.apply {
-                        isChecked = false
-                        isEnabled = false
-                    }
                 }
 
                 if (!isPublicShare()) {

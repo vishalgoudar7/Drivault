@@ -303,7 +303,7 @@ class InviteFriendsFragment : Fragment() {
 
                             DisplayUtils.showSnackMessage(
                                 requireActivity(),
-                                "Email already exists"
+                                "A Drivault user with the same Email ID already exists"
                             )
                         }
 
@@ -325,7 +325,7 @@ class InviteFriendsFragment : Fragment() {
 
                                     DisplayUtils.showSnackMessage(
                                         requireActivity(),
-                                        "Mobile number already exists"
+                                        "A Drivault user with the same Mobile Number already exists"
                                     )
 
                                 } else {

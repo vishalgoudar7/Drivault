@@ -10,6 +10,7 @@
   ~ SPDX-License-Identifier: GPL-2.0-only AND (AGPL-3.0-or-later OR GPL-2.0-only)
 -->
 <resources>
+    <color name="ecosystem_icon_color">#000000</color>
     <color name="list_item_lastmod_and_filesize_text">@color/secondary_text_color</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>

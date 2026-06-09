@@ -518,22 +518,32 @@ public abstract class DrawerActivity extends ToolbarActivity
             assistantView.setVisibility(View.GONE);
         }
 
-        List<LinearLayout> views = Arrays.asList(notesView, talkView, moreView, assistantView);
-
         int iconColor;
-        final var account = getAccount();
-        if (account != null) {
-            int primaryColor = themeColorUtils.unchangedPrimaryColor(account, this);
-            if (Hct.fromInt(primaryColor).getTone() < 80.0) {
-                iconColor = Color.WHITE;
+
+        boolean isDarkMode =
+            (getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK)
+                == Configuration.UI_MODE_NIGHT_YES;
+
+        if (isDarkMode) {
+            iconColor = Color.parseColor("#BDBDBD"); // Grey
+        } else {
+            final var account = getAccount();
+
+            if (account != null) {
+                int primaryColor = themeColorUtils.unchangedPrimaryColor(account, this);
+
+                if (Hct.fromInt(primaryColor).getTone() < 80.0) {
+                    iconColor = Color.WHITE;
+                } else {
+                    iconColor = getColor(R.color.grey_800_transparent);
+                }
             } else {
                 iconColor = getColor(R.color.grey_800_transparent);
             }
-        } else {
-            iconColor = getColor(R.color.grey_800_transparent);
         }
 
-        for (LinearLayout view : views) {
+        for (LinearLayout view : Arrays.asList(notesView, talkView, moreView, assistantView)) {
             ImageView imageView = (ImageView) view.getChildAt(0);
             imageView.setImageTintList(ColorStateList.valueOf(iconColor));
             GradientDrawable background = (GradientDrawable) imageView.getBackground();
@@ -552,12 +562,25 @@ public abstract class DrawerActivity extends ToolbarActivity
         imageHeader.setAdjustViewBounds(true);
 
         if (!TextUtils.isEmpty(serverName)) {
-            TextView serverNameView = mNavigationViewHeader.findViewById(R.id.drawer_header_server_name);
+            TextView serverNameView =
+                mNavigationViewHeader.findViewById(R.id.drawer_header_server_name);
+
             serverNameView.setVisibility(View.VISIBLE);
             serverNameView.setText(serverName);
-            serverNameView.setTextColor(themeColorUtils.unchangedFontColor(this));
-        }
 
+            boolean isDarkMode =
+                (getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK)
+                    == Configuration.UI_MODE_NIGHT_YES;
+
+            if (isDarkMode) {
+                serverNameView.setTextColor(Color.WHITE);
+            } else {
+                serverNameView.setTextColor(
+                    themeColorUtils.unchangedFontColor(this)
+                                           );
+            }
+        }
     }
 
     /**

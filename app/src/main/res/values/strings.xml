@@ -122,7 +122,7 @@
     <string name="drawer_item_shared">Shared</string>
     <string name="drawer_item_uploads_list">Uploads</string>
     <string name="drawer_item_activities">Activities</string>
-    <string name="drawer_item_invite_friends">Invite</string>
+    <string name="drawer_item_invite_friends">Free Upgrade to 1000 GB</string>
     <string name="drawer_item_notifications">Notifications</string>
     <string name="drawer_quota">%1$s of %2$s used</string>
     <string name="drawer_quota_unlimited">%1$s used</string>
@@ -456,9 +456,7 @@
 
 
 
-    <string name="invited_users_count">
-    Invited Users (%1$d)
-</string>
+    <string name="invited_users_count">Invited Users (%1$d/9)</string>
 
     <string name="status_accepted">
     Accepted

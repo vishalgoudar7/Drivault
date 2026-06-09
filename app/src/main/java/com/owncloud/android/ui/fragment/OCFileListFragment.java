@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import java.util.Collections;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -1108,7 +1109,7 @@ public class OCFileListFragment extends ExtendedListFragment implements
 
     private void folderOnItemClick(OCFile file, int position) {
         if (requireActivity() instanceof FolderPickerActivity fpa) {
-            String filenameErrorMessage = FileNameValidator.INSTANCE.checkFileName(file.getFileName(), getCapabilities(), requireContext(), null);
+            String filenameErrorMessage = FileNameValidator.INSTANCE.checkFileName(file.getFileName(), getCapabilities(), requireContext(), Collections.emptySet());
             if (filenameErrorMessage != null) {
                 DisplayUtils.showSnackMessage(fpa, filenameErrorMessage);
                 return;
@@ -1463,7 +1464,7 @@ public class OCFileListFragment extends ExtendedListFragment implements
 
     private String checkInvalidFilenames(Set<OCFile> checkedFiles) {
         for (OCFile file : checkedFiles) {
-            String errorMessage = FileNameValidator.INSTANCE.checkFileName(file.getFileName(), getCapabilities(), requireContext(), null);
+            String errorMessage = FileNameValidator.INSTANCE.checkFileName(file.getFileName(), getCapabilities(), requireContext(), Collections.emptySet());
             if (errorMessage != null) {
                 return errorMessage;
             }
@@ -1757,6 +1758,8 @@ public class OCFileListFragment extends ExtendedListFragment implements
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(CommentsEvent event) {
+        Log_OC.e("COMMENT_DEBUG",
+                 "CommentsEvent received. RemoteId = " + event.getRemoteId());
         mAdapter.refreshCommentsCount(event.getRemoteId());
     }
 

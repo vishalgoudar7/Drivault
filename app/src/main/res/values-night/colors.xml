@@ -7,36 +7,40 @@
 -->
 <resources>
 
-    <color name="text_color">#333333</color>
-    <color name="text_color_inverse">#ffffff</color>
-    <color name="disabled_text">#ff888888</color>
-    <color name="secondary_text_color">#666666</color>
-    <color name="list_divider_background">#CAC4D0</color>
-    <color name="task_container">#F4F4F4</color>
+    <color name="color_accent">#FFFFFF</color>
+    <color name="text_color">#FFFFFF</color>
+    <color name="ecosystem_icon_color">#FFFFFF</color>
+
+    <color name="secondary_text_color">#FFFFFF</color>
+
+    <color name="bg_default">#121212</color>
+
+    <color name="drawer_menu_icon">#FFFFFF</color>
+
+    <color name="fontAppbar">#FFFFFF</color>
+
+    <color name="appbar">#121212</color>
 
     <!-- Colors -->
     <color name="dark">#000000</color>
-    <color name="bg_default">#ffffff</color>
     <color name="primary_button_text_color">#ffffff</color>
     <color name="grey_200">#EEEEEE</color>
-    <color name="nc_grey">#ededed</color>
-    <color name="icon_on_nc_grey">#000000</color>
-    <color name="foreground_highlight">#1D1B1E</color>
+    <color name="nc_grey">#2A2A2A</color>
+    <color name="icon_on_nc_grey">#FFFFFF</color>
+    <color name="foreground_highlight">#FFFFFF</color>
 
     <!-- Multiselect backgrounds -->
     <color name="action_mode_background">@color/fontAppbar</color>
-    <color name="selected_item_background">#ECECEC</color>
+    <color name="selected_item_background">#2A2A2A</color>
+    <color name="filelist_icon_background">#2A2A2A</color>
+    <color name="standard_grey">#AAAAAA</color>
 
-    <color name="filelist_icon_background">#DDDDDD</color>
-    <color name="standard_grey">#757575</color>
-
-    <color name="drawer_menu_icon">#757575</color>
     <color name="bg_fallback_highlight">#616161</color>
-    <color name="drawer_active_item_background">#80000000</color>
+    <color name="drawer_active_item_background">#40FFFFFF</color>
 
-    <!-- App bar -->
-    <color name="appbar">@color/bg_default</color>
-    <color name="fontAppbar">#666666</color>
+    <color name="bg_message_bubble">#2A2A2A</color>
 
-    <color name="bg_message_bubble">#EFEFEF</color>
+    <color name="brand_primary">#FFFFFF</color>
+    <color name="brand_text">#FFFFFF</color>
+
 </resources>

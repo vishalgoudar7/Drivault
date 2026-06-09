@@ -327,6 +327,8 @@ public class FileDetailActivitiesFragment extends Fragment implements
 
                 Log_OC.d(TAG, "BEFORE getRemoteActivitiesOperation.execute");
                 final var result = nextcloudClient.execute(getRemoteNotificationOperation);
+                Log_OC.e("COMMENT_DEBUG", "Success = " + result.isSuccess());
+                Log_OC.e("COMMENT_DEBUG", "Data = " + String.valueOf(result.getData()));
 
                 ArrayList<Object> versions = null;
                 if (restoreFileVersionSupported) {
@@ -343,6 +345,12 @@ public class FileDetailActivitiesFragment extends Fragment implements
                 if (result.isSuccess() && result.getData() != null) {
                     final List<Object> data = result.getData();
                     final List<Object> activitiesAndVersions = (ArrayList) data.get(0);
+                    Log_OC.e("COMMENT_DEBUG",
+                             "Activities Count = " + activitiesAndVersions.size());
+
+                    for (Object item : activitiesAndVersions) {
+                        Log_OC.e("COMMENT_DEBUG", item.toString());
+                    }
 
                     this.lastGiven = (long) data.get(1);
 
