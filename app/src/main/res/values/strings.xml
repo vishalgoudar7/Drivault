@@ -42,6 +42,8 @@
     <string name="app_config_base_url_title">Base URL</string>
     <string name="app_config_proxy_host_title">Proxy Hostname</string>
     <string name="app_config_proxy_port_title">Proxy Port</string>
+    <string name="sending_invitation">Sending Invitation...</string>
+
     <string name="app_config_enforce_protection_title">Enforce Protection</string>
     <string name="offline_operations_file_does_not_exists_yet">File does not exist yet. Please upload the file first.</string>
 

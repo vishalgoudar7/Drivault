@@ -59,6 +59,10 @@ class InviteFriendsFragment : Fragment() {
     @Inject
     lateinit var viewThemeUtils: ViewThemeUtils
 
+    private val client by lazy {
+        OkHttpClient()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -268,7 +272,7 @@ class InviteFriendsFragment : Fragment() {
 
                     DisplayUtils.showSnackMessage(
                         requireActivity(),
-                        "User already invited or account already created"
+                        "A Drivault user with the same Email ID or Mobile Number already exists"
                     )
 
                     return
@@ -285,60 +289,138 @@ class InviteFriendsFragment : Fragment() {
 
                     return
                 }
-
-                binding.inviteProgress.visibility = View.VISIBLE
-                binding.inviteFriendsSend.isEnabled = false
+                //
+                // binding.inviteProgress.visibility = View.VISIBLE
+                // binding.inviteFriendsSend.text = ""
+                // binding.inviteFriendsSend.isEnabled = false
+                binding.loadingLayout.visibility = View.VISIBLE
+                binding.inviteFriendsSend.text = ""
+                binding.inviteFriendsSend.isClickable = false
 
                 checkUserExists(email) { emailExists ->
+                    // if (emailExists) {
+                    //
+                    //     binding?.loadingLayout?.visibility = View.GONE
+                    //     binding?.inviteFriendsSend?.setText(R.string.write_email)
+                    //
+                    //     binding?.inviteFriendsSend?.isClickable = true
+                    //
+                    //     DisplayUtils.showSnackMessage(
+                    //         requireActivity(),
+                    //         "A Drivault user with the same Email ID already exists"
+                    //     )
+                    // }
 
-                    if (emailExists) {
+                    // if (emailExists) {
+                    //
+                    //     requireActivity().runOnUiThread {
+                    //
+                    //         binding?.inviteProgress?.visibility =
+                    //             View.GONE
+                    //
+                    //         binding?.inviteFriendsSend?.isEnabled =
+                    //             true
+                    //
+                    //         DisplayUtils.showSnackMessage(
+                    //             requireActivity(),
+                    //             "A Drivault user with the same Email ID already exists"
+                    //         )
+                    //     }
+                    //
+                    // }
+
+                    checkUserExists(email) { emailExists ->
 
                         requireActivity().runOnUiThread {
 
-                            binding?.inviteProgress?.visibility =
-                                View.GONE
+                            if (emailExists) {
 
-                            binding?.inviteFriendsSend?.isEnabled =
-                                true
+                                binding?.loadingLayout?.visibility = View.GONE
+                                binding?.inviteFriendsSend?.setText(R.string.write_email)
+                                binding?.inviteFriendsSend?.isClickable = true
 
-                            DisplayUtils.showSnackMessage(
-                                requireActivity(),
-                                "A Drivault user with the same Email ID already exists"
-                            )
-                        }
+                                DisplayUtils.showSnackMessage(
+                                    requireActivity(),
+                                    "A Drivault user with the same Email ID already exists"
+                                )
 
-                    } else {
+                            } else {
 
-                        checkUserExists(
-                            mobileUsername
-                        ) { mobileExists ->
+                                checkUserExists(mobileUsername) { mobileExists ->
 
-                            requireActivity().runOnUiThread {
+                                    requireActivity().runOnUiThread {
 
-                                if (mobileExists) {
+                                        if (mobileExists) {
 
-                                    binding?.inviteProgress?.visibility =
-                                        View.GONE
+                                            binding?.loadingLayout?.visibility = View.GONE
+                                            binding?.inviteFriendsSend?.setText(R.string.write_email)
+                                            binding?.inviteFriendsSend?.isClickable = true
 
-                                    binding?.inviteFriendsSend?.isEnabled =
-                                        true
+                                            DisplayUtils.showSnackMessage(
+                                                requireActivity(),
+                                                "A Drivault user with the same Mobile Number already exists"
+                                            )
 
-                                    DisplayUtils.showSnackMessage(
-                                        requireActivity(),
-                                        "A Drivault user with the same Mobile Number already exists"
-                                    )
+                                        } else {
 
-                                } else {
-
-                                    createUser(
-                                        name,
-                                        email,
-                                        mobileUsername
-                                    )
+                                            createUser(
+                                                name,
+                                                email,
+                                                mobileUsername
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
+
+                    // else {
+                    //
+                    //     checkUserExists(
+                    //         mobileUsername
+                    //     ) { mobileExists ->
+                    //
+                    //         requireActivity().runOnUiThread {
+                    //             if (mobileExists) {
+                    //
+                    //                 binding?.loadingLayout?.visibility = View.GONE
+                    //
+                    //                 binding?.inviteFriendsSend?.setText(R.string.write_email)
+                    //
+                    //                 binding?.inviteFriendsSend?.isClickable = true
+                    //
+                    //                 DisplayUtils.showSnackMessage(
+                    //                     requireActivity(),
+                    //                     "A Drivault user with the same Mobile Number already exists"
+                    //                 )
+                    //             }
+                    //
+                    //             // if (mobileExists) {
+                    //             //
+                    //             //     binding?.inviteProgress?.visibility =
+                    //             //         View.GONE
+                    //             //
+                    //             //     binding?.inviteFriendsSend?.isEnabled =
+                    //             //         true
+                    //             //
+                    //             //     DisplayUtils.showSnackMessage(
+                    //             //         requireActivity(),
+                    //             //         "A Drivault user with the same Mobile Number already exists"
+                    //             //     )
+                    //             //
+                    //             // }
+                    //             else {
+                    //
+                    //                 createUser(
+                    //                     name,
+                    //                     email,
+                    //                     mobileUsername
+                    //                 )
+                    //             }
+                    //         }
+                    //     }
+                    // }
                 }
 
 
@@ -371,7 +453,7 @@ class InviteFriendsFragment : Fragment() {
         onResult: (Boolean) -> Unit
     ) {
 
-        val client = OkHttpClient()
+        // val client = OkHttpClient()
 
         val request = Request.Builder()
             .url(
@@ -465,9 +547,10 @@ class InviteFriendsFragment : Fragment() {
         mobileUsername: String
     ) {
 
+
         Log.d("INVITE_DEBUG", "createUser Started")
 
-        val client = OkHttpClient()
+        // val client = OkHttpClient()
 
         // val senderEmail = "admin@gmail.com" // Replace with logged-in user email
         val accounts =
@@ -523,8 +606,11 @@ class InviteFriendsFragment : Fragment() {
                 Log.e("INVITE_DEBUG", "API FAILURE: ${e.message}")
 
                 requireActivity().runOnUiThread {
-                    binding?.inviteProgress?.visibility = View.GONE
-                    binding?.inviteFriendsSend?.isEnabled = true
+                    binding?.loadingLayout?.visibility = View.GONE
+                    binding?.inviteFriendsSend?.setText(R.string.write_email)
+                    // binding?.inviteFriendsSend?.isEnabled = true
+                    binding?.inviteFriendsSend?.isClickable = true
+                    binding?.inviteFriendsSend?.setText(R.string.write_email)
                     DisplayUtils.showSnackMessage(
                         requireActivity(),
                         "API Failed: ${e.message}"
@@ -558,20 +644,45 @@ class InviteFriendsFragment : Fragment() {
                 }
 
                 requireActivity().runOnUiThread {
-                    binding?.inviteProgress?.visibility = View.GONE
-                    binding?.inviteFriendsSend?.isEnabled = true
+                    binding?.loadingLayout?.visibility = View.GONE
+                    binding?.inviteFriendsSend?.setText(R.string.write_email)
+                    binding?.inviteFriendsSend?.isClickable = true
+                    // binding?.inviteFriendsSend?.isEnabled = true
+                    binding?.inviteFriendsSend?.setText(R.string.write_email)
 
+                    // if (response.isSuccessful) {
+                    //
+                    //     clearFormInputs()
+                    //
+                    //     fetchInvitedUsers()
+                    //
+                    //     DisplayUtils.showSnackMessage(
+                    //         requireActivity(),
+                    //         "Invite Sent Successfully"
+                    //     )
+                    // }
                     if (response.isSuccessful) {
 
-                        clearFormInputs()
+                        invitedFriends.add(
+                            0,
+                            InviteFriend(
+                                name,
+                                email,
+                                mobileUsername,
+                                false
+                            )
+                        )
 
-                        fetchInvitedUsers()
+                        renderInvitedFriends()
+
+                        clearFormInputs()
 
                         DisplayUtils.showSnackMessage(
                             requireActivity(),
                             "Invite Sent Successfully"
                         )
-                    } else {
+                    }
+                    else {
 
                         DisplayUtils.showSnackMessage(
                             requireActivity(),
@@ -591,7 +702,7 @@ class InviteFriendsFragment : Fragment() {
         binding?.inviteProgress?.visibility =
             View.VISIBLE
 
-        val client = OkHttpClient()
+        // val client = OkHttpClient()
 
         val accounts =
             AccountManager.get(requireContext()).accounts
@@ -683,7 +794,7 @@ class InviteFriendsFragment : Fragment() {
         binding?.inviteProgress?.visibility =
             View.VISIBLE
 
-        val client = OkHttpClient()
+        // val client = OkHttpClient()
 
         val accounts =
             AccountManager
@@ -934,7 +1045,7 @@ class InviteFriendsFragment : Fragment() {
     }
     private fun fetchInvitedUsers() {
 
-        val client = OkHttpClient()
+        // val client = OkHttpClient()
 
         val accounts =
             AccountManager.get(requireContext()).accounts
@@ -1026,6 +1137,7 @@ class InviteFriendsFragment : Fragment() {
                                 )
                             )
                         }
+                        invitedFriends.reverse()
 
                         renderInvitedFriends()
 

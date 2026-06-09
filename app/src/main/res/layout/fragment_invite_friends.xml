@@ -161,21 +161,73 @@
                     android:maxLength="10"/>
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/invite_friends_send"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/standard_padding"
-                android:text="@string/write_email"
-                android:theme="@style/Button.Primary" />
-            <ProgressBar
-                android:id="@+id/invite_progress"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                android:visibility="gone" />
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/standard_padding">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/invite_friends_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/write_email"
+                    android:theme="@style/Button.Primary" />
+
+                <LinearLayout
+                    android:id="@+id/loading_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:id="@+id/invite_progress"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp" />
+
+                    <TextView
+                        android:id="@+id/loading_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/sending_invitation"
+                        android:textColor="@android:color/white"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+<!--            <FrameLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/standard_padding">-->
+
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    android:id="@+id/invite_friends_send"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/write_email"-->
+<!--                    android:theme="@style/Button.Primary" />-->
+
+<!--                <ProgressBar-->
+<!--                    android:id="@+id/invite_progress"-->
+<!--                    android:layout_width="20dp"-->
+<!--                    android:layout_height="20dp"-->
+<!--                    android:layout_gravity="center|end"-->
+<!--                    android:layout_marginEnd="16dp"-->
+<!--                    android:visibility="gone" />-->
+<!--&lt;!&ndash;                <ProgressBar&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:id="@+id/invite_progress"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="24dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="24dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:visibility="gone" />&ndash;&gt;-->
+
+<!--            </FrameLayout>-->
 
         </LinearLayout>
         <!-- Invite Limit Layout -->
