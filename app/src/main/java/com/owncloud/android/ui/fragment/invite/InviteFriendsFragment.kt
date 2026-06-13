@@ -268,24 +268,35 @@ class InviteFriendsFragment : Fragment() {
             }
 
             else -> {
+                // Show loading IMMEDIATELY before any checks
+                binding.loadingLayout.visibility = View.VISIBLE
+                binding.inviteFriendsSend.text = ""
+
                 if (isAlreadyInvited(email, mobileUsername)) {
 
-                    DisplayUtils.showSnackMessage(
-                        requireActivity(),
-                        "A Drivault user with the same Email ID or Mobile Number already exists"
-                    )
+                    binding.root.postDelayed({
+                        binding.loadingLayout.visibility = View.GONE
+                        binding.inviteFriendsSend.setText(R.string.write_email)
+
+                        DisplayUtils.showSnackMessage(
+                            requireActivity(),
+                            "A Drivault user with the same Email ID or Mobile Number already exists"
+                        )
+                    }, 600)
 
                     return
                 }
-
-                // Limit only 9 invites
-
                 if (invitedFriends.size >= 9) {
 
-                    DisplayUtils.showSnackMessage(
-                        requireActivity(),
-                        "You can send only 9 invitations"
-                    )
+                    binding.root.postDelayed({
+                        binding.loadingLayout.visibility = View.GONE
+                        binding.inviteFriendsSend.setText(R.string.write_email)
+
+                        DisplayUtils.showSnackMessage(
+                            requireActivity(),
+                            "You can send only 9 invitations"
+                        )
+                    }, 600)
 
                     return
                 }
@@ -295,10 +306,7 @@ class InviteFriendsFragment : Fragment() {
                 // binding.inviteFriendsSend.isEnabled = false
                 binding.loadingLayout.visibility = View.VISIBLE
                 binding.inviteFriendsSend.text = ""
-                binding.inviteFriendsSend.isClickable = false
-
-                checkUserExists(email) { emailExists ->
-                    // if (emailExists) {
+                 // if (emailExists) {
                     //
                     //     binding?.loadingLayout?.visibility = View.GONE
                     //     binding?.inviteFriendsSend?.setText(R.string.write_email)
@@ -421,7 +429,7 @@ class InviteFriendsFragment : Fragment() {
                     //         }
                     //     }
                     // }
-                }
+
 
 
 
@@ -610,7 +618,6 @@ class InviteFriendsFragment : Fragment() {
                     binding?.inviteFriendsSend?.setText(R.string.write_email)
                     // binding?.inviteFriendsSend?.isEnabled = true
                     binding?.inviteFriendsSend?.isClickable = true
-                    binding?.inviteFriendsSend?.setText(R.string.write_email)
                     DisplayUtils.showSnackMessage(
                         requireActivity(),
                         "API Failed: ${e.message}"
