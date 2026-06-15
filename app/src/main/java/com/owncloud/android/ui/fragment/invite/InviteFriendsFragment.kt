@@ -42,6 +42,7 @@ import com.google.android.material.snackbar.Snackbar
 // import android.widget.Toast
 
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.net.toUri
 import org.json.JSONArray
 import org.json.JSONObject
@@ -92,6 +93,14 @@ class InviteFriendsFragment : Fragment() {
                 openedActionLayout = null
             }
         }
+    }
+    private fun showAppToast(message: String) {
+
+        Toast.makeText(
+            requireContext(),
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun setupViews() {
@@ -158,6 +167,7 @@ class InviteFriendsFragment : Fragment() {
             startActivity(intent)
         }
     }
+
 
     private fun sendInvite() {
 
@@ -273,29 +283,24 @@ class InviteFriendsFragment : Fragment() {
                 binding.inviteFriendsSend.text = ""
 
                 if (isAlreadyInvited(email, mobileUsername)) {
-
+                    binding.inviteFriendsSend.isClickable = false  // ← ADD THIS
                     binding.root.postDelayed({
                         binding.loadingLayout.visibility = View.GONE
                         binding.inviteFriendsSend.setText(R.string.write_email)
-
-                        DisplayUtils.showSnackMessage(
-                            requireActivity(),
-                            "A Drivault user with the same Email ID or Mobile Number already exists"
-                        )
+                        binding.inviteFriendsSend.isClickable = true
+                        showAppToast("A Drivault user with the same Email ID or Mobile Number already exists")
                     }, 600)
 
                     return
                 }
+
                 if (invitedFriends.size >= 9) {
 
                     binding.root.postDelayed({
                         binding.loadingLayout.visibility = View.GONE
                         binding.inviteFriendsSend.setText(R.string.write_email)
 
-                        DisplayUtils.showSnackMessage(
-                            requireActivity(),
-                            "You can send only 9 invitations"
-                        )
+                        showAppToast("You can send only 9 invitations")
                     }, 600)
 
                     return
@@ -347,10 +352,7 @@ class InviteFriendsFragment : Fragment() {
                                 binding?.inviteFriendsSend?.setText(R.string.write_email)
                                 binding?.inviteFriendsSend?.isClickable = true
 
-                                DisplayUtils.showSnackMessage(
-                                    requireActivity(),
-                                    "A Drivault user with the same Email ID already exists"
-                                )
+                                showAppToast("A Drivault user with the same Email ID already exists") // ← FIXED
 
                             } else {
 
@@ -364,10 +366,7 @@ class InviteFriendsFragment : Fragment() {
                                             binding?.inviteFriendsSend?.setText(R.string.write_email)
                                             binding?.inviteFriendsSend?.isClickable = true
 
-                                            DisplayUtils.showSnackMessage(
-                                                requireActivity(),
-                                                "A Drivault user with the same Mobile Number already exists"
-                                            )
+                                            showAppToast("A Drivault user with the same Mobile Number already exists")
 
                                         } else {
 
@@ -618,10 +617,11 @@ class InviteFriendsFragment : Fragment() {
                     binding?.inviteFriendsSend?.setText(R.string.write_email)
                     // binding?.inviteFriendsSend?.isEnabled = true
                     binding?.inviteFriendsSend?.isClickable = true
-                    DisplayUtils.showSnackMessage(
-                        requireActivity(),
-                        "API Failed: ${e.message}"
-                    )
+                    // DisplayUtils.showSnackMessage(
+                    //     requireActivity(),
+                    //     "API Failed: ${e.message}"
+                    // )
+                    showAppToast("API Failed: ${e.message}")
                 }
             }
 
@@ -684,17 +684,13 @@ class InviteFriendsFragment : Fragment() {
 
                         clearFormInputs()
 
-                        DisplayUtils.showSnackMessage(
-                            requireActivity(),
-                            "Invite Sent Successfully"
-                        )
+
+                        showAppToast("Invite Sent Successfully")
                     }
                     else {
 
-                        DisplayUtils.showSnackMessage(
-                            requireActivity(),
-                            "Failed: $responseText"
-                        )
+
+                        showAppToast("Failed: $responseText")
                     }
                 }
             }
@@ -751,10 +747,9 @@ class InviteFriendsFragment : Fragment() {
                     binding?.inviteProgress?.visibility =
                         View.GONE
 
-                    DisplayUtils.showSnackMessage(
-                        requireActivity(),
-                        "Resend failed"
-                    )
+
+                    showAppToast("Resend failed")
+
                 }
             }
 
@@ -786,10 +781,8 @@ class InviteFriendsFragment : Fragment() {
                         openedActionLayout = null
                     }
 
-                    DisplayUtils.showSnackMessage(
-                        requireActivity(),
-                        "Invitation resent successfully"
-                    )
+
+                    showAppToast("Invitation resent successfully")
                 }
             }
         })
@@ -873,10 +866,8 @@ class InviteFriendsFragment : Fragment() {
                                 e.message.toString()
                             )
 
-                            DisplayUtils.showSnackMessage(
-                                requireActivity(),
-                                "API Failed"
-                            )
+
+                            showAppToast("API Failed")
                         }
                 }
 
@@ -911,18 +902,13 @@ class InviteFriendsFragment : Fragment() {
 
                                 renderInvitedFriends()
 
-                                DisplayUtils.showSnackMessage(
-                                    requireActivity(),
-                                    "Invitation revoked"
-                                )
+
+                                showAppToast("Invitation revoked")
 
                             } else {
 
-                                DisplayUtils.showSnackMessage(
-                                    requireActivity(),
-                                    responseText
-                                        ?: "Failed"
-                                )
+
+                                showAppToast("Failed")
                             }
                         }
                 }
@@ -982,12 +968,13 @@ class InviteFriendsFragment : Fragment() {
             )
             // showCustomSnackbar("🎉 9 Invitations completed!")
         } else {
-            DisplayUtils.showSnackMessage(
-                requireActivity(),
-                getString(
-                    R.string.invite_sent_success
-                )
-            )
+            // DisplayUtils.showSnackMessage(
+            //     requireActivity(),
+            //     getString(
+            //         R.string.invite_sent_success
+            //     )
+            // )
+            showAppToast("Invite Sent Successfully")
             // DisplayUtils.showSnackMessage(
             //     requireActivity(),
             //     "Invite Sent Successfully"
@@ -1096,10 +1083,8 @@ class InviteFriendsFragment : Fragment() {
 
                 requireActivity().runOnUiThread {
 
-                    DisplayUtils.showSnackMessage(
-                        requireActivity(),
-                        "Failed loading users"
-                    )
+
+                    showAppToast("Failed loading users")
                 }
             }
 
@@ -1681,10 +1666,11 @@ class InviteFriendsFragment : Fragment() {
 
                     renderInvitedFriends()
 
-                    DisplayUtils.showSnackMessage(
-                        requireActivity(),
-                        R.string.invite_friends_invite_revoked
-                    )
+                    // DisplayUtils.showSnackMessage(
+                    //     requireActivity(),
+                    //     R.string.invite_friends_invite_revoked
+                    // )
+                    showAppToast("invite revoked")
                 }
             }
         }
