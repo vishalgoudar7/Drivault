@@ -1248,16 +1248,21 @@ class FileDisplayActivity :
         val fragment = leftFragment as OCFileListFragment
 
         when {
-            // root
             isRoot(getCurrentDir()) -> {
-                if (fragment.shouldNavigateBackToAllFiles()) {
-                    navigateToAllFiles()
-                } else {
-                    finish()
+
+                if (MainApp.isOnlyOnDevice()) {
+
+                    showFiles(false, false)
+
+                    MainApp.showOnlyFilesOnDevice(false)
+                    MainApp.showOnlyPersonalFiles(false)
+
+                    return
                 }
+
+                finish()
             }
 
-            // Normal folder navigation (go up) also works for shared tab
             else -> {
                 browseUp(fragment)
             }

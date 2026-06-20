@@ -889,9 +889,20 @@ public abstract class DrawerActivity extends ToolbarActivity
     /**
      * opens the drawer.
      */
+//    public void openDrawer() {
+//        if (mDrawerLayout != null) {
+//            mDrawerLayout.openDrawer(GravityCompat.START);
+//            updateExternalLinksInDrawer();
+//            updateQuotaLink();
+//        }
+//    }
     public void openDrawer() {
         if (mDrawerLayout != null) {
             mDrawerLayout.openDrawer(GravityCompat.START);
+
+            // Refresh storage every time drawer opens
+            getAndDisplayUserQuota();
+
             updateExternalLinksInDrawer();
             updateQuotaLink();
         }
@@ -1334,8 +1345,7 @@ public abstract class DrawerActivity extends ToolbarActivity
         MainApp.showOnlyFilesOnDevice(true);
         MainApp.showOnlyPersonalFiles(false);
 
-        Intent intent = new Intent(getApplicationContext(), FileDisplayActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent = new Intent(this, FileDisplayActivity.class);
         intent.setAction(FileDisplayActivity.ON_DEVICE);
         startActivity(intent);
     }
