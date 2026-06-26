@@ -419,6 +419,7 @@ public class SettingsActivity extends PreferenceActivity
     private void setupRecommendPreference(PreferenceCategory preferenceCategoryMore) {
         boolean recommendEnabled = getResources().getBoolean(R.bool.recommend_enabled);
         Preference pRecommend = findPreference("recommend");
+
         if (pRecommend != null) {
             if (recommendEnabled) {
                 pRecommend.setOnPreferenceClickListener(preference -> {
@@ -428,21 +429,23 @@ public class SettingsActivity extends PreferenceActivity
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                     String appName = getString(R.string.app_name);
-                    String downloadUrlGooglePlayStore = getString(R.string.url_app_download);
-                    String downloadUrlFDroid = getString(R.string.fdroid_link);
-                    String downloadUrls = String.format(getString(R.string.recommend_urls),
-                                                        downloadUrlGooglePlayStore, downloadUrlFDroid);
+                    String downloadUrlGooglePlayStore =
+                        getString(R.string.url_app_download);
 
-                    String recommendSubject = String.format(getString(R.string.recommend_subject), appName);
-                    String recommendText = String.format(getString(R.string.recommend_text),
-                                                         appName, downloadUrls);
+                    String recommendSubject =
+                        String.format(getString(R.string.recommend_subject), appName);
+
+                    String recommendText =
+                        "I want to invite you to use " + appName +
+                            " on your device.\n\nDownload here: " +
+                            downloadUrlGooglePlayStore;
 
                     intent.putExtra(Intent.EXTRA_SUBJECT, recommendSubject);
                     intent.putExtra(Intent.EXTRA_TEXT, recommendText);
-                    startActivity(intent);
+
+                    startActivity(Intent.createChooser(intent, "Share via"));
 
                     return true;
-
                 });
             } else {
                 preferenceCategoryMore.removePreference(pRecommend);

@@ -69,12 +69,12 @@ class GallerySearchTask(
     private fun buildSearchOperation(
         ocCapability: com.owncloud.android.lib.resources.status.OCCapability
     ): SearchRemoteOperation =
-        SearchRemoteOperation("", SearchRemoteOperation.SearchType.GALLERY_SEARCH, false, ocCapability).apply {
-            setLimit(limit)
-            setEndDate(endDate)
-            // workaround to keep SearchRemoteOperation functioning correctly even if we don't actively use startDate
-            setStartDate(0L)
-        }
+        SearchRemoteOperation(
+            "",
+            SearchRemoteOperation.SearchType.GALLERY_SEARCH,
+            false,
+            ocCapability
+        )
 
     private fun logSearchStart() {
         val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.US)

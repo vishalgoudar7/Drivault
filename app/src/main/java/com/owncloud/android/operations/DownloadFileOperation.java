@@ -202,9 +202,9 @@ public class DownloadFileOperation extends RemoteOperation {
 
         downloadOperation = new DownloadFileRemoteOperation(file.getRemotePath(), tmpFolder);
 
-        if (downloadType == DownloadType.DOWNLOAD) {
-            dataTransferListeners.forEach(downloadOperation::addDatatransferProgressListener);
-        }
+//        if (downloadType == DownloadType.DOWNLOAD) {
+//            dataTransferListeners.forEach(downloadOperation::addDatatransferProgressListener);
+//        }
 
         NextcloudClient nextcloudClient = OwnCloudClientExtensionsKt.toNextcloudClient(client, operationContext);
         result = downloadOperation.execute(nextcloudClient);

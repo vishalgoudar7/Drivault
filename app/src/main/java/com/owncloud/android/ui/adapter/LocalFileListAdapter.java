@@ -236,7 +236,7 @@ public class LocalFileListAdapter extends RecyclerView.Adapter<RecyclerView.View
                 grid.itemLayout.setBackgroundColor(Color.parseColor("#2E2E2E"));
 
                 // Change selected text color to black
-                grid.fileName.setTextColor(Color.WHITE);
+
 
                 grid.checkbox.setImageDrawable(
                     viewThemeUtils.platform.tintDrawable(
@@ -252,7 +252,7 @@ public class LocalFileListAdapter extends RecyclerView.Adapter<RecyclerView.View
                 grid.itemLayout.setBackgroundColor(Color.TRANSPARENT);
 
                 // Restore normal text color
-                grid.fileName.setTextColor(Color.WHITE);
+
 
                 grid.checkbox.setImageResource(
                     R.drawable.ic_checkbox_blank_outline
@@ -295,13 +295,6 @@ public class LocalFileListAdapter extends RecyclerView.Adapter<RecyclerView.View
             item.lastModification.setText(
                 DisplayUtils.getRelativeTimestamp(mContext, file.lastModified())
                                          );
-            if (isCheckedFile(file)) {
-                item.fileSize.setTextColor(Color.LTGRAY);
-                item.lastModification.setTextColor(Color.LTGRAY);
-            } else {
-                item.fileSize.setTextColor(Color.LTGRAY);
-                item.lastModification.setTextColor(Color.LTGRAY);
-            }
         }
 
         // Filename

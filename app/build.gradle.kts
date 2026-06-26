@@ -104,7 +104,7 @@ android {
         applicationId = "com.drivault"
         minSdk = 28
         targetSdk = 36
-        compileSdk = 36
+        compileSdk = 37
 
         ndk {
             abiFilters += listOf("arm64-v8a", "x86_64", "x86")
@@ -123,7 +123,7 @@ android {
         //     versionBuild > 50 -> "${versionMajor}.${versionMinor}.${versionPatch} RC" + (versionBuild - 50)
         //     else -> "${versionMajor}.${versionMinor}.${versionPatch} Alpha" + (versionBuild + 1)
         // }
-        versionCode = 330020060
+        versionCode = 330020061
         versionName = "33.3.0"
 
         // adapt structure from Eclipse to Gradle/Android Studio expectations;

@@ -42,7 +42,7 @@ import com.owncloud.android.lib.resources.e2ee.MetadataResponse;
 import com.owncloud.android.lib.resources.e2ee.StoreMetadataRemoteOperation;
 import com.owncloud.android.lib.resources.e2ee.StoreMetadataV2RemoteOperation;
 import com.owncloud.android.lib.resources.e2ee.UnlockFileRemoteOperation;
-import com.owncloud.android.lib.resources.e2ee.UnlockFileV1RemoteOperation;
+
 import com.owncloud.android.lib.resources.e2ee.UpdateMetadataRemoteOperation;
 import com.owncloud.android.lib.resources.e2ee.UpdateMetadataV2RemoteOperation;
 import com.owncloud.android.lib.resources.files.model.ServerFileInterface;
@@ -1165,8 +1165,10 @@ public final class EncryptionUtils {
 
     public static String lockFolder(ServerFileInterface parentFile, OwnCloudClient client, long counter) throws UploadException {
         // Lock folder
-        LockFileRemoteOperation lockFileOperation = new LockFileRemoteOperation(parentFile.getLocalId(),
-                                                                                counter);
+        LockFileRemoteOperation lockFileOperation =
+            new LockFileRemoteOperation(
+                parentFile.getLocalId()
+            );
         RemoteOperationResult<String> lockFileOperationResult = lockFileOperation.execute(client);
 
         if (lockFileOperationResult.isSuccess() &&
@@ -1366,7 +1368,10 @@ public final class EncryptionUtils {
 
     public static RemoteOperationResult<Void> unlockFolderV1(ServerFileInterface parentFolder, OwnCloudClient client, String token) {
         if (token != null) {
-            return new UnlockFileV1RemoteOperation(parentFolder.getLocalId(), token).execute(client);
+            return new UnlockFileRemoteOperation(
+                parentFolder.getLocalId(),
+                token
+            ).execute(client);
         } else {
             return new RemoteOperationResult<>(new Exception("No token available"));
         }
