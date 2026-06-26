@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -220,25 +221,42 @@ public class LocalFileListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         LocalFileListGridItemViewHolder grid = (LocalFileListGridItemViewHolder) holder;
 
-        // Background + checkbox logic
+        // FIX: Background + checkbox logic — use theme-aware backgrounds instead of hardcoded colors
         if (mLocalFolderPicker) {
-            grid.itemLayout.setBackgroundColor(mContext.getResources().getColor(R.color.bg_default));
+            // FIX: was ContextCompat.getColor(mContext, R.color.bg_default) which renders white in dark mode
+            grid.itemLayout.setBackground(null);
             grid.checkbox.setVisibility(View.GONE);
+
         } else {
             grid.checkbox.setVisibility(View.VISIBLE);
 
             if (isCheckedFile(file)) {
-                grid.itemLayout.setBackgroundColor(
-                    ContextCompat.getColor(mContext, R.color.selected_item_background)
-                                                  );
+
+                // Keep background transparent
+                grid.itemLayout.setBackgroundColor(Color.parseColor("#2E2E2E"));
+
+                // Change selected text color to black
+                grid.fileName.setTextColor(Color.WHITE);
+
                 grid.checkbox.setImageDrawable(
-                    viewThemeUtils.platform.tintDrawable(mContext, R.drawable.ic_checkbox_marked, ColorRole.PRIMARY)
+                    viewThemeUtils.platform.tintDrawable(
+                        mContext,
+                        R.drawable.ic_checkbox_marked,
+                        ColorRole.PRIMARY
+                                                        )
                                               );
+
             } else {
-                grid.itemLayout.setBackgroundColor(
-                    mContext.getResources().getColor(R.color.bg_default)
-                                                  );
-                grid.checkbox.setImageResource(R.drawable.ic_checkbox_blank_outline);
+
+                // Normal state
+                grid.itemLayout.setBackgroundColor(Color.TRANSPARENT);
+
+                // Restore normal text color
+                grid.fileName.setTextColor(Color.WHITE);
+
+                grid.checkbox.setImageResource(
+                    R.drawable.ic_checkbox_blank_outline
+                                              );
             }
 
             grid.checkbox.setOnClickListener(v ->
@@ -250,9 +268,14 @@ public class LocalFileListAdapter extends RecyclerView.Adapter<RecyclerView.View
         grid.thumbnail.setTag(file.hashCode());
         setThumbnail(file, grid.thumbnail, mContext, viewThemeUtils);
 
-        grid.itemLayout.setOnClickListener(v ->
-                                               localFileListFragmentInterface.onItemClicked(file)
-                                          );
+        grid.itemLayout.setOnClickListener(v -> {
+            v.setPressed(false);
+            v.setSelected(false);
+            v.setActivated(false);
+            v.setBackgroundColor(Color.TRANSPARENT);
+
+            localFileListFragmentInterface.onItemClicked(file);
+        });
 
         if (holder instanceof LocalFileListItemViewHolder item) {
             if (file.isDirectory()) {
@@ -272,10 +295,20 @@ public class LocalFileListAdapter extends RecyclerView.Adapter<RecyclerView.View
             item.lastModification.setText(
                 DisplayUtils.getRelativeTimestamp(mContext, file.lastModified())
                                          );
+            if (isCheckedFile(file)) {
+                item.fileSize.setTextColor(Color.LTGRAY);
+                item.lastModification.setTextColor(Color.LTGRAY);
+            } else {
+                item.fileSize.setTextColor(Color.LTGRAY);
+                item.lastModification.setTextColor(Color.LTGRAY);
+            }
         }
 
         // Filename
         grid.fileName.setText(file.getName());
+        holder.itemView.setActivated(false);
+        holder.itemView.setSelected(false);
+        holder.itemView.setPressed(false);
     }
 
     public static void setThumbnail(File file,
@@ -298,8 +331,8 @@ public class LocalFileListAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (MimeTypeUtil.isImage(file)) {
                 // Thumbnail in Cache?
                 Bitmap thumbnail = ThumbnailsCacheManager.getBitmapFromDiskCache(
-                        ThumbnailsCacheManager.PREFIX_THUMBNAIL + file.hashCode()
-                );
+                    ThumbnailsCacheManager.PREFIX_THUMBNAIL + file.hashCode()
+                                                                                );
                 if (thumbnail != null) {
                     thumbnailView.setImageBitmap(thumbnail);
                 } else {
@@ -307,18 +340,18 @@ public class LocalFileListAdapter extends RecyclerView.Adapter<RecyclerView.View
                     // generate new Thumbnail
                     if (allowedToCreateNewThumbnail) {
                         final ThumbnailsCacheManager.ThumbnailGenerationTask task =
-                                new ThumbnailsCacheManager.ThumbnailGenerationTask(thumbnailView);
+                            new ThumbnailsCacheManager.ThumbnailGenerationTask(thumbnailView);
                         if (MimeTypeUtil.isVideo(file)) {
                             thumbnail = ThumbnailsCacheManager.mDefaultVideo;
                         } else {
                             thumbnail = ThumbnailsCacheManager.mDefaultImg;
                         }
                         final ThumbnailsCacheManager.AsyncThumbnailDrawable asyncDrawable =
-                                new ThumbnailsCacheManager.AsyncThumbnailDrawable(
-                                    context.getResources(),
-                                    thumbnail,
-                                    task
-                                );
+                            new ThumbnailsCacheManager.AsyncThumbnailDrawable(
+                                context.getResources(),
+                                thumbnail,
+                                task
+                            );
                         thumbnailView.setImageDrawable(asyncDrawable);
                         task.execute(new ThumbnailsCacheManager.ThumbnailGenerationTaskObject(file, null));
                         Log_OC.v(TAG, "Executing task to generate a new thumbnail");

@@ -30,8 +30,8 @@
     <color name="foreground_highlight">#FFFFFF</color>
 
     <!-- Multiselect backgrounds -->
-    <color name="action_mode_background">@color/fontAppbar</color>
-    <color name="selected_item_background">#2A2A2A</color>
+    <color name="action_mode_background">@color/bg_default</color>
+    <color name="selected_item_background">#332A2A2A</color>
     <color name="filelist_icon_background">#2A2A2A</color>
     <color name="standard_grey">#AAAAAA</color>
 
@@ -42,5 +42,6 @@
 
     <color name="brand_primary">#FFFFFF</color>
     <color name="brand_text">#FFFFFF</color>
+    <color name="bg_dark_transparent">#333333</color>
 
 </resources>

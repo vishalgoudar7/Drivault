@@ -317,11 +317,17 @@ public class ReceiveExternalFilesActivity extends FileActivity
                 return;
             }
 
-            String filenameErrorMessage = FileNameValidator.INSTANCE.checkFileName(file.getFileName(), optionalCapabilities.get(), this, null);
-            if (filenameErrorMessage != null) {
-                DisplayUtils.showSnackMessage(this, filenameErrorMessage);
-                return;
-            }
+//            String filenameErrorMessage = FileNameValidator.INSTANCE.checkFileName(file.getFileName(), optionalCapabilities.get(), this, null);
+//            if (filenameErrorMessage != null) {
+//                DisplayUtils.showSnackMessage(this, filenameErrorMessage);
+//                return;
+//            }
+            String filenameErrorMessage = FileNameValidator.INSTANCE.checkFileName(
+                file.getFileName(),
+                optionalCapabilities.get(),
+                this,
+                Collections.emptySet()
+                                                                                  );
 
             if (file.isEncrypted() &&
                 !FileOperationsHelper.isEndToEndEncryptionSetup(this, getUser().orElseThrow(IllegalAccessError::new))) {

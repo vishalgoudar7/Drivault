@@ -171,6 +171,7 @@ import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.util.function.Supplier
 import javax.inject.Inject
+import com.owncloud.android.ui.activity.ZipViewerActivity
 
 /**
  * Displays, what files the user has available in his Nextcloud. This is the main view.
@@ -2021,10 +2022,18 @@ class FileDisplayActivity :
             return
         }
 
-        if (MimeTypeUtil.isVCard(file)) {
+        if (file.fileName.endsWith(".zip", ignoreCase = true)) {
+
+            fileOperationsHelper.openFile(file)
+
+        } else if (MimeTypeUtil.isVCard(file)) {
+
             startContactListFragment(file)
+
         } else if (MimeTypeUtil.isPDF(file)) {
+
             startPdfPreview(file)
+
         } else if (PreviewTextFileFragment.canBePreviewed(file)) {
             setFabVisible?.onComplete(false)
             startTextPreview(file, false)

@@ -123,7 +123,7 @@ android {
         //     versionBuild > 50 -> "${versionMajor}.${versionMinor}.${versionPatch} RC" + (versionBuild - 50)
         //     else -> "${versionMajor}.${versionMinor}.${versionPatch} Alpha" + (versionBuild + 1)
         // }
-        versionCode = 330020058
+        versionCode = 330020060
         versionName = "33.3.0"
 
         // adapt structure from Eclipse to Gradle/Android Studio expectations;
@@ -332,6 +332,7 @@ tasks.named("check").configure {
 }
 
 dependencies {
+
     // region Nextcloud library
     implementation(libs.android.library) {
         exclude(group = "org.ogce", module = "xpp3") // unused in Android and brings wrong Junit version
