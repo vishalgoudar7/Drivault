@@ -143,6 +143,9 @@ import okhttp3.Credentials;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
+
 import static com.owncloud.android.utils.PermissionUtil.PERMISSIONS_CAMERA;
 
 /**
@@ -415,7 +418,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity
             if (!isLoginProcessCompleted) {
                 performLoginFlowV2();
             }
-        }, 0, 30, TimeUnit.SECONDS);
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
     /**
@@ -491,6 +494,28 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity
         return post.getResponseBodyAsString();
     }
 
+//    private void launchDefaultWebBrowser(String url) {
+//        if (url == null || url.isBlank()) {
+//            DisplayUtils.showSnackMessage(this, R.string.invalid_url);
+//            return;
+//        }
+//
+//        try {
+//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            PackageManager packageManager = getPackageManager();
+//
+//            if (intent.resolveActivity(packageManager) != null) {
+//                startActivity(intent);
+//            } else {
+//                DisplayUtils.showSnackMessage(this, R.string.authenticator_activity_no_web_browser_found);
+//            }
+//        } catch (Exception e) {
+//            Log_OC.e(TAG, "Exception launchDefaultWebBrowser: " + e);
+//            DisplayUtils.showSnackMessage(this, R.string.authenticator_activity_login_error);
+//        }
+//    }
+
     private void launchDefaultWebBrowser(String url) {
         if (url == null || url.isBlank()) {
             DisplayUtils.showSnackMessage(this, R.string.invalid_url);
@@ -498,45 +523,60 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity
         }
 
         try {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PackageManager packageManager = getPackageManager();
+            CustomTabColorSchemeParams colorScheme =
+                new CustomTabColorSchemeParams.Builder()
+                    .build();
 
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent);
-            } else {
-                DisplayUtils.showSnackMessage(this, R.string.authenticator_activity_no_web_browser_found);
-            }
+            CustomTabsIntent customTabsIntent =
+                new CustomTabsIntent.Builder()
+                    .setDefaultColorSchemeParams(colorScheme)
+                    .setShowTitle(true)
+                    .build();
+
+            customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            // Open login page in Custom Tab
+            customTabsIntent.launchUrl(this, Uri.parse(url));
+
+            // Start polling immediately
+            Log_OC.d(TAG, "Starting login polling");
+            poolLogin();
+
         } catch (Exception e) {
-            Log_OC.e(TAG, "Exception launchDefaultWebBrowser: " + e);
-            DisplayUtils.showSnackMessage(this, R.string.authenticator_activity_login_error);
+            Log_OC.e(TAG, "Error opening Custom Tab", e);
+
+            DisplayUtils.showSnackMessage(
+                this,
+                R.string.authenticator_activity_login_error
+                                         );
         }
     }
-
     private Pair<String, String> extractPollUrlAndToken() {
-        if (authObject != null) {
-            final var poll = authObject.getPoll();
-            String pollUrl = poll.getEndpoint();
-            String token = poll.getToken();
 
-            if (TextUtils.isEmpty(pollUrl)) {
-                Log_OC.e(TAG, "auth object poll url is empty.");
-            }
-            if (TextUtils.isEmpty(token)) {
-                Log_OC.e(TAG, "auth object token is empty.");
-            }
+        if (authObject != null && authObject.getPoll() != null) {
 
-            if (!TextUtils.isEmpty(pollUrl) && !TextUtils.isEmpty(token)) {
+            String pollUrl = authObject.getPoll().getEndpoint();
+            String token = authObject.getPoll().getToken();
+
+            Log_OC.d(TAG, "Poll URL from server = " + pollUrl);
+            Log_OC.d(TAG, "Poll Token = " + token);
+
+            if (!TextUtils.isEmpty(pollUrl)
+                && !TextUtils.isEmpty(token)) {
+
                 return new Pair<>(pollUrl, token);
             }
         }
 
-        return new Pair<>(baseUrl + "/poll", fallbackToken);
+        // DO NOT use fallback URL
+        Log_OC.e(TAG, "Poll URL missing from server response");
+
+        return new Pair<>("", "");
     }
 
     private void performLoginFlowV2() {
         final var pollUrlAndToken = extractPollUrlAndToken();
-
+        Log_OC.d(TAG, "Calling poll URL = " + pollUrlAndToken.first);
         RequestBody requestBody = new FormBody.Builder()
             .add("token", pollUrlAndToken.second)
             .build();
@@ -555,39 +595,61 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity
     }
 
     private void completeLoginFlow(String response, int status) {
+
+        Log_OC.d(TAG, "completeLoginFlow status: " + status);
+        Log_OC.d(TAG, "completeLoginFlow response: " + response);
+
+        // Login not completed yet
+        if (status == 404 || TextUtils.isEmpty(response)) {
+            Log_OC.d(TAG, "Waiting for login completion...");
+            return;
+        }
+
+        // Login still pending
+        if ("[]".equals(response.trim())) {
+            Log_OC.d(TAG, "Login not completed yet");
+            return;
+        }
+
         try {
-            LoginUrlInfo loginUrlInfo = gson.fromJson(response, LoginUrlInfo.class);
+            LoginUrlInfo loginUrlInfo =
+                gson.fromJson(response, LoginUrlInfo.class);
+
             if (loginUrlInfo == null) {
-                Log_OC.e(TAG, "cannot complete login flow loginUrl is null");
                 return;
             }
-            isLoginProcessCompleted = loginUrlInfo.isValid(status);
+
+            isLoginProcessCompleted = true;
 
             if (accountSetupBinding != null) {
                 accountSetupBinding.hostUrlInput.setText("");
             }
 
-            mServerInfo.mBaseUrl = AuthenticatorUrlUtils.INSTANCE.normalizeUrlSuffix(loginUrlInfo.getServer());
+            mServerInfo.mBaseUrl =
+                AuthenticatorUrlUtils.INSTANCE
+                    .normalizeUrlSuffix(loginUrlInfo.getServer());
+
             webViewUser = loginUrlInfo.getLoginName();
             webViewPassword = loginUrlInfo.getAppPassword();
-        } catch (Exception e) {
-            Log_OC.d(TAG, "Error completeLoginFlow: " + e);
-            mServerStatusIcon = R.drawable.ic_alert;
-            mServerStatusText = getString(R.string.qr_could_not_be_read);
-            showServerStatus();
-        }
 
-        checkOcServer();
-        loginFlowExecutorService.shutdown();
-        ProcessLifecycleOwner.get().getLifecycle().removeObserver(lifecycleEventObserver);
+            Log_OC.d(TAG, "Login completed successfully");
+
+            checkOcServer();
+
+            loginFlowExecutorService.shutdown();
+            ProcessLifecycleOwner.get()
+                .getLifecycle()
+                .removeObserver(lifecycleEventObserver);
+
+        } catch (Exception e) {
+            Log_OC.e(TAG, "Error completeLoginFlow", e);
+        }
     }
 
-    private final LifecycleEventObserver lifecycleEventObserver = ((lifecycleOwner, event) -> {
-        if (event == Lifecycle.Event.ON_START && authObject != null && !TextUtils.isEmpty(authObject.getPoll().getToken())) {
-            Log_OC.d(TAG, "Start poolLogin");
-            poolLogin();
-        }
-    });
+    private final LifecycleEventObserver lifecycleEventObserver =
+        ((lifecycleOwner, event) -> {
+            Log_OC.d(TAG, "Lifecycle event: " + event);
+        });
     // endregion
 
     @Override
